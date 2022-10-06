@@ -2,6 +2,7 @@ import dao.impl.UserModifyDAO;
 import model.User;
 import validation.ValidationEmail;
 import validation.ValidationID;
+import validation.ValidationPassword;
 import validation.ValidationUsername;
 
 import java.io.*;
@@ -36,6 +37,10 @@ public class UserModifyDAOImpl implements UserModifyDAO {
         while (ValidationEmail.validationEmail(email) != true) {
             System.out.println("this email used other user, input other email");
             email = sc.nextLine();
+        }
+        while (ValidationPassword.validationPassword(password)!=true){
+            System.out.println("Uncorrect password. Please input new password.");
+            password=sc.nextLine();
         }
 
         User user = new User(id, username, password, email, role);
@@ -138,6 +143,10 @@ public class UserModifyDAOImpl implements UserModifyDAO {
                     sc.nextLine();
                     System.out.println("Input new password");
                     password = sc.nextLine();
+                    while (ValidationPassword.validationPassword(password)!=true){
+                        System.out.println("Uncorrect password. Please input new password.");
+                        password=sc.nextLine();
+                    }
                     needModifyUser.setPassword(password);
                     try (FileWriter fw = new FileWriter(file, true)) {
                         fw.write(needModifyUser.toString() + "\n");
