@@ -1,8 +1,8 @@
 package com.web.servlets;
 import UserImpl.UserDAOImpl;
 import UserImpl.UserModifyDAOImpl;
-import dao.impl.UserDAO;
-import dao.impl.UserModifyDAO;
+import dao.UserDAO;
+import dao.UserModifyDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

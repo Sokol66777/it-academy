@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ValidationParametrs {
 
-    public static final String FILE_PATH = "D:\\projects\\it-academy\\test1.csv";
+    private static final String FILE_PATH = "D:\\projects\\it-academy\\test1.csv";
 
     public static boolean validationEmail(String email) throws IOException, RepeatedDataException {
         {

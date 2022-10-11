@@ -1,3 +1,5 @@
+package UserImpl;
+
 import model.User;
 
 public class StringToUser {

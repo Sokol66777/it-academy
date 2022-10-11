@@ -1,4 +1,4 @@
-package dao.impl;
+package dao;
 
 import model.User;
 
@@ -13,4 +13,6 @@ public interface UserDAO {
     User getByID(long ID) throws IOException;
 
     User getByEmail(String email) throws IOException;
+
+    long getGreatestID() throws IOException;
 }

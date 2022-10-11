@@ -2,8 +2,8 @@ package com.web.servlets;
 
 import UserImpl.UserDAOImpl;
 import UserImpl.UserModifyDAOImpl;
-import dao.impl.UserDAO;
-import dao.impl.UserModifyDAO;
+import dao.UserDAO;
+import dao.UserModifyDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
