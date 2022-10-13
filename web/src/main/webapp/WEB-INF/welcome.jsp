@@ -15,9 +15,7 @@
     <button onclick = "location.href='update?updateUsername=${user.username}'">Update</button>
 
     <c:if test="${user.role=='admin'}">
-       <form action="allUsers" method="post">
-            <p><input type = "submit" value="Your users"/></p>
-       </form>
+       <button onclick = "location.href='allUsers?adminName=${user.username}'">All users</button>
     </c:if>
 
 

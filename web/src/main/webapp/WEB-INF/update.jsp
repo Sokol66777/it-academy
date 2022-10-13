@@ -9,19 +9,17 @@
     	<table>
 			<tr>
     			<td>User Name</td>
-        		<td><input type = "text" name="newUsername"  required="required"/></td>
+        		<td><input type = "text" name="newUsername"  required="required"  value="<c:out value='${updateUser.username}'/>"/></td>
 			</tr>
     		<tr>
-    			<td>Old Password</td>
-        		<td><input type = "password" name="oldPassword"  required="required"/></td>
+    		    <c:if test="${user.username==updateUser.username}">
+    			    <td>Password</td>
+        		    <td><input type = "password" name="password"  required="required" value="<c:out value='${updateUser.password}'/>"/></td>
+			    </c:if>
 			</tr>
-			<tr>
-                <td>New password</td>
-                <td><input type = "password" name="newPassword"  required="required"/></td>
-            </tr>
             <tr>
                 <td>Email</td>
-                <td><input type = "email" name="newEmail"  required="required"/></td>
+                <td><input type = "email" name="newEmail"  required="required" value="<c:out value='${updateUser.email}'/>"/></td>
             </tr>
         	<tr>
         		<td><input type = "submit" value="Update"/></td>

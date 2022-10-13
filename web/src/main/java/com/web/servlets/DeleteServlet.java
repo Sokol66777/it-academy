@@ -3,6 +3,7 @@ package com.web.servlets;
 import UserImpl.UserDAOImpl;
 import UserImpl.UserModifyDAOImpl;
 import dao.UserModifyDAO;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,8 +22,8 @@ public class DeleteServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String username = request.getParameter("username");
         userModifyDAO.DeleteUser(username);
-        UsersServlet usersServlet = new UsersServlet();
-        usersServlet.doPost(request,response);
+        RequestDispatcher rd = request.getRequestDispatcher("allUsers");
+        rd.forward(request,response);
 
     }
 
