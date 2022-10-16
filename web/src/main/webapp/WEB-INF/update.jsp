@@ -29,9 +29,7 @@
 	<button onclick ="location.href='welcome'" >welcome page</button>
 	<button onclick = "location.href='logout'"> logout </button>
 	 <c:if test="${user.role=='admin'}">
-           <form action="allUsers" method="post">
-                <p><input type = "submit" value="Your users"/></p>
-           </form>
+                  <button onclick = "location.href='allUsers?adminName=${user.username}'">All users</button>
      </c:if>
 
 </body>
