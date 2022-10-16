@@ -10,11 +10,6 @@ public class User {
     private long ID;
 
     public User(){
-    this.email="";
-    this.ID=0;
-    this.password="";
-    this.role="";
-    this.username="";
     }
 
     public User(long ID, String username,String password, String email,  String role ) {

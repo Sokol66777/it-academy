@@ -1,6 +1,7 @@
 package validation;
 
 import Exceptions.RepeatedDataException;
+import model.Constants;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,16 +9,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import model.Constants;
 
 public class ValidationParametrs {
 
-    private static final String FILE_PATH = "D:\\projects\\it-academy\\test1.csv";
 
-    public static boolean validationEmail(String email) throws IOException, RepeatedDataException {
+    public static void validationEmail(String email) throws IOException, RepeatedDataException {
         {
             List<String> allUsers = new ArrayList<>();
             String line;
-            File file = new File(FILE_PATH);
+            File file = new File(Constants.FILE_PATH);
             try(BufferedReader reader = new BufferedReader(new FileReader(file))){
                 line=reader.readLine();
                 while(line!=null){
@@ -33,23 +34,20 @@ public class ValidationParametrs {
                     }
                 }
             }
-
-            return true;
         }
     }
 
-    public static boolean validationPassword(String password) throws RepeatedDataException {
+    public static void validationPassword(String password) throws RepeatedDataException {
         if(!password.matches("(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}")){
             throw new RepeatedDataException("Password is not valid");
         }
 
-        return true;
     }
 
-    public static boolean validationUsername(String username) throws IOException, RepeatedDataException {
+    public static void validationUsername(String username) throws IOException, RepeatedDataException {
         List<String> allUsers = new ArrayList<>();
         String line;
-        File file = new File(FILE_PATH);
+        File file = new File(Constants.FILE_PATH);
         try(BufferedReader reader = new BufferedReader(new FileReader(file))){
             line=reader.readLine();
             while(line!=null){
@@ -68,7 +66,6 @@ public class ValidationParametrs {
 
         }
 
-        return true;
     }
 
 
