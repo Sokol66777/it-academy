@@ -6,7 +6,6 @@ import dao.UserDAO;
 import model.Constants;
 import model.User;
 
-import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -124,20 +123,5 @@ public class UserDAOImpl implements UserDAO {
         return user;
     }
 
-    @Override
-    public long getGreatestID(){
-        long id=0;
-        try(Connection connection = SQLConnection.getConnection()) {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(Constants.SQL_GET_MAX_ID);
-            while (resultSet.next()){
-                id = resultSet.getLong(1);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
-        id+=1;
-        return id;
-    }
 }

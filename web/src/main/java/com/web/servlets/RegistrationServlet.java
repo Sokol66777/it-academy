@@ -17,6 +17,7 @@ import validation.ValidationParametrs;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 @WebServlet(name = "RegistrationServlet", urlPatterns = {"/add"})
 public class RegistrationServlet extends HttpServlet {
@@ -40,7 +41,6 @@ public class RegistrationServlet extends HttpServlet {
        String email = request.getParameter("email");
 
 
-        long id = userDAO.getGreatestID();
        if(!password.equals(confirmedPassword)){
            PrintWriter printWriter = response.getWriter();
            printWriter.write("Password is not confirmed");
@@ -49,19 +49,15 @@ public class RegistrationServlet extends HttpServlet {
            printWriter.close();
        }else{
            try {
-               ValidationParametrs.validationUsername(username);
-               ValidationParametrs.validationEmail(email);
                ValidationParametrs.validationPassword(password);
-               User user = new User(id,username,password,email,role);
-               userModifyDAO.AddUser(user);
+               userModifyDAO.AddUser(username,password,email);
                HttpSession session = request.getSession();
-               session.setAttribute("username", user.getUsername());
-               session.setAttribute("role",user.getRole());
-               session.setAttribute("user",user);
+               session.setAttribute("username", username);
+               session.setAttribute("role",role);
                RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");
                rd.forward(request,response);
 
-           } catch (RepeatedDataException e) {
+           } catch (RepeatedDataException | SQLException e) {
               PrintWriter printWriter=response.getWriter();
               printWriter.write(e.getMessage());
               RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/add.jsp");

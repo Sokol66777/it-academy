@@ -13,7 +13,7 @@ public class SQLConnection {
             Class.forName(Constants.JDBC_DRIVER);
             connection = DriverManager.getConnection(Constants.DATABASE_URL,"root","gfdj3lkm,.b31?");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new SQLException("Connection not complete");
         }
 
         return connection;
