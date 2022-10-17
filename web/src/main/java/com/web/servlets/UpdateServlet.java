@@ -17,6 +17,7 @@ import validation.ValidationParametrs;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 @WebServlet(name = "UpdateServlet", urlPatterns = {"/update"})
 public class UpdateServlet extends HttpServlet {
@@ -31,6 +32,8 @@ public class UpdateServlet extends HttpServlet {
         HttpSession session = request.getSession();
         session.setAttribute("updateUser",updateUser);
         session.setAttribute("updateUsersUsername",updateUsersUsername);
+        session.setAttribute("updateUsersPassword",updateUser.getPassword());
+        session.setAttribute("updateUsersEmail",updateUser.getEmail());
         RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/update.jsp");
         rd.forward(request,response);
     }
@@ -46,33 +49,25 @@ public class UpdateServlet extends HttpServlet {
         if(updateUsersUsername.equals(session.getAttribute("username"))) {
             password = request.getParameter("password");
         }
-        User modifyUser = userDAO.getByUsername(updateUsersUsername);
-        userModifyDAO.DeleteUser(updateUsersUsername);
         try {
-            ValidationParametrs.validationUsername(newUsername);
             if(!password.equals("")) {
                 ValidationParametrs.validationPassword(password);
             }
-            ValidationParametrs.validationEmail(newEmail);
-            modifyUser.setUsername(newUsername);
-            modifyUser.setEmail(newEmail);
-            if(!password.equals("")) {
-                modifyUser.setPassword(password);
+            if (password.equals("")){
+                userModifyDAO.ModifyUser(newUsername,newEmail,updateUsersUsername);
             }
-            userModifyDAO.AddUser(modifyUser);
+            else{
+                userModifyDAO.ModifyUser(newUsername,password,newEmail,updateUsersUsername);
+            }
+
             if(updateUsersUsername.equals(session.getAttribute("username"))){
-
-                session.setAttribute("username", modifyUser.getUsername());
-                session.setAttribute("role",modifyUser.getRole());
-                session.setAttribute("user",modifyUser);
-
+                session.setAttribute("username", newUsername);
             }
             RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");
             rd.forward(request,response);
 
-        } catch (RepeatedDataException e) {
+        } catch (RepeatedDataException | SQLException e) {
 
-            userModifyDAO.AddUser(modifyUser);
             PrintWriter printWriter = response.getWriter();
             printWriter.write(e.getMessage());
             RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/update.jsp");
