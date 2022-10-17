@@ -15,7 +15,7 @@ public class UserDAOImpl implements UserDAO {
 
 
     @Override
-    public List<User> getAllUsers() throws IOException {
+    public List<User> getAllUsers(){
         List<User> users = new ArrayList<>();
         try(Connection connection = SQLConnection.getConnection()) {
             Statement statement = connection.createStatement();
@@ -44,7 +44,7 @@ public class UserDAOImpl implements UserDAO {
 
 
     @Override
-    public User getByUsername(String username) throws IOException {
+    public User getByUsername(String username){
         User user=null;
 
         try (Connection connection = SQLConnection.getConnection()){
@@ -73,7 +73,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User getByID(long ID) throws IOException {
+    public User getByID(long ID) {
         User user = null;
         try(Connection connection = SQLConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_GET_BY_ID);
@@ -99,7 +99,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User getByEmail(String email) throws IOException {
+    public User getByEmail(String email) {
        User user = null;
        try(Connection connection = SQLConnection.getConnection()) {
            PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_GET_BY_EMAIL);
@@ -125,7 +125,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public long getGreatestID() throws IOException {
+    public long getGreatestID(){
         long id=0;
         try(Connection connection = SQLConnection.getConnection()) {
             Statement statement = connection.createStatement();

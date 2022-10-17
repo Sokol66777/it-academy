@@ -14,6 +14,7 @@ public class Constants {
     public static final String SQL_GET_BY_EMAIL = "SELECT * FROM user where email = ?";
     public static final String SQL_GET_ALL_USERS = "SELECT * FROM user";
     public static final String SQL_GET_MAX_ID = "SELECT MAX(ID) FROM user";
+    public static final String SQL_DELETE_FROM_USER = "DELETE FROM user WHERE name = ?";
 
 
 
