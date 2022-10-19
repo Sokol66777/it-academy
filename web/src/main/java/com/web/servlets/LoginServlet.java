@@ -1,8 +1,6 @@
 package com.web.servlets;
 import UserImpl.UserDAOImpl;
-import UserImpl.UserModifyDAOImpl;
 import dao.UserDAO;
-import dao.UserModifyDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,7 +18,6 @@ import model.User;
 public class LoginServlet extends HttpServlet {
 
     public final UserDAO userDAO = new UserDAOImpl();
-    public final UserModifyDAO userModifyDAO = new UserModifyDAOImpl();
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher rd = request.getRequestDispatcher("index.jsp");

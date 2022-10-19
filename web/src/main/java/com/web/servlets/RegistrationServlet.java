@@ -2,9 +2,7 @@ package com.web.servlets;
 
 import Exceptions.RepeatedDataException;
 import UserImpl.UserDAOImpl;
-import UserImpl.UserModifyDAOImpl;
 import dao.UserDAO;
-import dao.UserModifyDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,7 +21,6 @@ import java.sql.SQLException;
 public class RegistrationServlet extends HttpServlet {
 
     public final UserDAO userDAO = new UserDAOImpl();
-    public final UserModifyDAO userModifyDAO = new UserModifyDAOImpl();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -50,7 +47,13 @@ public class RegistrationServlet extends HttpServlet {
        }else{
            try {
                ValidationParametrs.validationPassword(password);
-               userModifyDAO.AddUser(username,password,email);
+
+               User newUser = new User();
+               newUser.setEmail(email);
+               newUser.setPassword(password);
+               newUser.setUsername(username);
+               userDAO.AddUser(newUser);
+
                HttpSession session = request.getSession();
                session.setAttribute("username", username);
                session.setAttribute("role",role);

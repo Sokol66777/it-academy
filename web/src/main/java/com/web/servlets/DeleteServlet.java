@@ -1,8 +1,7 @@
 package com.web.servlets;
 
 import UserImpl.UserDAOImpl;
-import UserImpl.UserModifyDAOImpl;
-import dao.UserModifyDAO;
+import dao.UserDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,12 +15,12 @@ import java.io.IOException;
 public class DeleteServlet extends HttpServlet {
 
 
-    UserModifyDAO userModifyDAO = new UserModifyDAOImpl();
+    UserDAO userDAO = new UserDAOImpl();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String username = request.getParameter("username");
-        userModifyDAO.DeleteUser(username);
+        userDAO.DeleteUser(username);
         RequestDispatcher rd = request.getRequestDispatcher("allUsers");
         rd.forward(request,response);
 

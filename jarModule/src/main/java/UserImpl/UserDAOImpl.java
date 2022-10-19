@@ -71,31 +71,7 @@ public class UserDAOImpl implements UserDAO {
         return user;
     }
 
-    @Override
-    public User getByID(long ID) {
-        User user = null;
-        try(Connection connection = SQLConnection.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_GET_BY_ID);
-            preparedStatement.setLong(1,ID);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                user = new User();
-                long id = resultSet.getLong("ID");
-                String name = resultSet.getString("name");
-                String password = resultSet.getString("password");
-                String usersEmail = resultSet.getString("email");
-                String role = resultSet.getString("role");
-                user.setEmail(usersEmail);
-                user.setUsername(name);
-                user.setPassword(password);
-                user.setID(id);
-                user.setRole(role);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return user;
-    }
+
 
     @Override
     public User getByEmail(String email) {
@@ -124,4 +100,82 @@ public class UserDAOImpl implements UserDAO {
     }
 
 
+    @Override
+    public void DeleteUser(String username) {
+
+        try(Connection connection = SQLConnection.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_DELETE_FROM_USER);
+            preparedStatement.setString(1,username);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
+    @Override
+    public void AddUser(User user) throws SQLException {
+
+        try(Connection connection = SQLConnection.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_ADD_INTO_USER);
+            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setString(2,user.getPassword());
+            preparedStatement.setString(3,user.getEmail());
+            preparedStatement.executeUpdate();
+        }
+
+    }
+
+    @Override
+    public void ModifyUser(User user) throws SQLException {
+
+        try(Connection connection = SQLConnection.getConnection()) {
+            PreparedStatement preparedStatement;
+            if(user.getPassword()!=null) {
+                preparedStatement = connection.prepareStatement(Constants.SQL_UPDATE_USER_WHITH_PASSWORD);
+                preparedStatement.setString(1, user.getUsername());
+                preparedStatement.setString(2, user.getPassword());
+                preparedStatement.setString(3, user.getEmail());
+                preparedStatement.setLong(4, user.getID());
+            }else{
+
+                preparedStatement = connection.prepareStatement(Constants.SQL_UPDATE_USER_WHITHOUT_PASSWORD);
+                preparedStatement.setString(1, user.getUsername());
+                preparedStatement.setString(2, user.getEmail());
+                preparedStatement.setLong(3,user.getID());
+
+
+            }
+            preparedStatement.executeUpdate();
+
+        }
+    }
+
+    @Override
+    public User get(long ID) {
+
+        User user = null;
+        try(Connection connection = SQLConnection.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_GET_BY_ID);
+            preparedStatement.setLong(1,ID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                user = new User();
+                long id = resultSet.getLong("ID");
+                String name = resultSet.getString("name");
+                String password = resultSet.getString("password");
+                String usersEmail = resultSet.getString("email");
+                String role = resultSet.getString("role");
+                user.setEmail(usersEmail);
+                user.setUsername(name);
+                user.setPassword(password);
+                user.setID(id);
+                user.setRole(role);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return user;
+    }
 }

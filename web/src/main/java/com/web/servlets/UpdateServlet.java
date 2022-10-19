@@ -2,9 +2,7 @@ package com.web.servlets;
 
 import Exceptions.RepeatedDataException;
 import UserImpl.UserDAOImpl;
-import UserImpl.UserModifyDAOImpl;
 import dao.UserDAO;
-import dao.UserModifyDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,7 +21,6 @@ import java.sql.SQLException;
 public class UpdateServlet extends HttpServlet {
 
     public final UserDAO userDAO = new UserDAOImpl();
-    public final UserModifyDAO userModifyDAO = new UserModifyDAOImpl();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -40,6 +37,7 @@ public class UpdateServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        User updateUser;
         response.setContentType("text/html");
         HttpSession session = request.getSession();
         String password="";
@@ -53,11 +51,19 @@ public class UpdateServlet extends HttpServlet {
             if(!password.equals("")) {
                 ValidationParametrs.validationPassword(password);
             }
+
+            User user = userDAO.getByUsername(updateUsersUsername);
+            updateUser = new User();
+            updateUser.setUsername(newUsername);
+            updateUser.setEmail(newEmail);
+            updateUser.setID(user.getID());
+
             if (password.equals("")){
-                userModifyDAO.ModifyUser(newUsername,newEmail,updateUsersUsername);
+                userDAO.ModifyUser(updateUser);
             }
             else{
-                userModifyDAO.ModifyUser(newUsername,password,newEmail,updateUsersUsername);
+                updateUser.setPassword(password);
+                userDAO.ModifyUser(updateUser);
             }
 
             if(updateUsersUsername.equals(session.getAttribute("username"))){

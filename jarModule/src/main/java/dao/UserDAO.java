@@ -6,12 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-public interface UserDAO {
+public interface UserDAO extends DAO<User> {
     List<User> getAllUsers() ;
     User getByUsername(String username);
-
-    User getByID(long ID);
-
     User getByEmail(String email);
 
 }
