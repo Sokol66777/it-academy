@@ -1,6 +1,6 @@
 package validation;
 
-import Exceptions.RepeatedDataException;
+import exceptions.RepeatedDataException;
 
 
 public class ValidationParametrs {

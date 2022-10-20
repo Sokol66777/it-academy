@@ -1,7 +1,7 @@
 package com.web.servlets;
 
-import Exceptions.RepeatedDataException;
-import UserImpl.UserDAOImpl;
+import exceptions.RepeatedDataException;
+import userImpl.UserDAOImpl;
 import dao.UserDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -25,14 +25,21 @@ public class UpdateServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String updateUsersUsername = request.getParameter("updateUsername");
-        User updateUser = userDAO.getByUsername(updateUsersUsername);
-        HttpSession session = request.getSession();
-        session.setAttribute("updateUser",updateUser);
-        session.setAttribute("updateUsersUsername",updateUsersUsername);
-        session.setAttribute("updateUsersPassword",updateUser.getPassword());
-        session.setAttribute("updateUsersEmail",updateUser.getEmail());
-        RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/update.jsp");
-        rd.forward(request,response);
+        try {
+            User updateUser = userDAO.getByUsername(updateUsersUsername);
+            HttpSession session = request.getSession();
+            session.setAttribute("updateUser", updateUser);
+            session.setAttribute("updateUsersUsername", updateUsersUsername);
+            session.setAttribute("updateUsersPassword", updateUser.getPassword());
+            session.setAttribute("updateUsersEmail", updateUser.getEmail());
+        }catch (SQLException e){
+            PrintWriter printWriter = response.getWriter();
+            printWriter.write(e.getMessage());
+            printWriter.close();
+        }
+            RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/update.jsp");
+            rd.forward(request, response);
+
     }
 
     @Override

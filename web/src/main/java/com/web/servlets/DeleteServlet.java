@@ -1,6 +1,6 @@
 package com.web.servlets;
 
-import UserImpl.UserDAOImpl;
+import userImpl.UserDAOImpl;
 import dao.UserDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
 
 @WebServlet(name= "DeleteServlet", urlPatterns = {"/delete"})
 public class DeleteServlet extends HttpServlet {
@@ -20,7 +22,13 @@ public class DeleteServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String username = request.getParameter("username");
-        userDAO.DeleteUser(username);
+        try {
+            userDAO.DeleteUser(username);
+        } catch (SQLException e) {
+            PrintWriter printWriter = response.getWriter();
+            printWriter.write(e.getMessage());
+            printWriter.close();
+        }
         RequestDispatcher rd = request.getRequestDispatcher("allUsers");
         rd.forward(request,response);
 

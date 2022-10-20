@@ -1,7 +1,7 @@
 package com.web.servlets;
 
-import Exceptions.RepeatedDataException;
-import UserImpl.UserDAOImpl;
+import exceptions.RepeatedDataException;
+import userImpl.UserDAOImpl;
 import dao.UserDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;

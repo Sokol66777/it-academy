@@ -1,11 +1,12 @@
-package UserImpl;
+package userImpl;
 
-
+import connectors.DataSourceConnectors;
 import SQL.SQLConnection;
 import dao.UserDAO;
 import model.Constants;
 import model.User;
 
+import java.beans.PropertyVetoException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +15,9 @@ public class UserDAOImpl implements UserDAO {
 
 
     @Override
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() throws SQLException {
         List<User> users = new ArrayList<>();
-        try(Connection connection = SQLConnection.getConnection()) {
+        try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(Constants.SQL_GET_ALL_USERS);
             while (resultSet.next()){
@@ -33,8 +34,6 @@ public class UserDAOImpl implements UserDAO {
                 user.setRole(role);
                 users.add(user);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
 
 
@@ -43,10 +42,10 @@ public class UserDAOImpl implements UserDAO {
 
 
     @Override
-    public User getByUsername(String username){
+    public User getByUsername(String username) throws SQLException {
         User user=null;
 
-        try (Connection connection = SQLConnection.getConnection()){
+        try (Connection connection = DataSourceConnectors.getInstance().getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_GET_BY_NAME);
             preparedStatement.setString(1,username);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -64,8 +63,6 @@ public class UserDAOImpl implements UserDAO {
                 user.setRole(role);
             }
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
 
         return user;
@@ -76,7 +73,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User getByEmail(String email) {
        User user = null;
-       try(Connection connection = SQLConnection.getConnection()) {
+       try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
            PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_GET_BY_EMAIL);
            preparedStatement.setString(1,email);
            ResultSet resultSet = preparedStatement.executeQuery();
@@ -101,14 +98,12 @@ public class UserDAOImpl implements UserDAO {
 
 
     @Override
-    public void DeleteUser(String username) {
+    public void DeleteUser(String username) throws SQLException {
 
-        try(Connection connection = SQLConnection.getConnection()) {
+        try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_DELETE_FROM_USER);
             preparedStatement.setString(1,username);
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
 
     }
@@ -117,7 +112,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void AddUser(User user) throws SQLException {
 
-        try(Connection connection = SQLConnection.getConnection()) {
+        try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_ADD_INTO_USER);
             preparedStatement.setString(1, user.getUsername());
             preparedStatement.setString(2,user.getPassword());
@@ -130,7 +125,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void ModifyUser(User user) throws SQLException {
 
-        try(Connection connection = SQLConnection.getConnection()) {
+        try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
             PreparedStatement preparedStatement;
             if(user.getPassword()!=null) {
                 preparedStatement = connection.prepareStatement(Constants.SQL_UPDATE_USER_WHITH_PASSWORD);
@@ -156,7 +151,7 @@ public class UserDAOImpl implements UserDAO {
     public User get(long ID) {
 
         User user = null;
-        try(Connection connection = SQLConnection.getConnection()) {
+        try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_GET_BY_ID);
             preparedStatement.setLong(1,ID);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -173,9 +168,10 @@ public class UserDAOImpl implements UserDAO {
                 user.setID(id);
                 user.setRole(role);
             }
-        } catch (SQLException e) {
+        } catch (SQLException e ) {
             throw new RuntimeException(e);
         }
+
         return user;
     }
 }

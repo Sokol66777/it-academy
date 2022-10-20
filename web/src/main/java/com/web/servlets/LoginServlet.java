@@ -1,5 +1,5 @@
 package com.web.servlets;
-import UserImpl.UserDAOImpl;
+import userImpl.UserDAOImpl;
 import dao.UserDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import jakarta.servlet.http.HttpSession;
 import model.User;
@@ -29,22 +30,30 @@ public class LoginServlet extends HttpServlet {
         response.setContentType("text/html");
         String name = request.getParameter("username");
         String password = request.getParameter("password");
-        User user = userDAO.getByUsername(name);
 
-        if(user!=null && user.getPassword().equals(password)){
-            HttpSession session = request.getSession();
-            session.setAttribute("username", user.getUsername());
-            session.setAttribute("role",user.getRole());
-            RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");
-            rd.forward(request,response);
-        }
-        else{
+        User user = null;
+        try {
+            user = userDAO.getByUsername(name);
+        } catch (SQLException e) {
             PrintWriter printWriter = response.getWriter();
-            printWriter.write("Incorrect name or password");
-            RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-            rd.include(request,response);
+            printWriter.write(e.getMessage());
             printWriter.close();
         }
+
+        if (user != null && user.getPassword().equals(password)) {
+                HttpSession session = request.getSession();
+                session.setAttribute("username", user.getUsername());
+                session.setAttribute("role", user.getRole());
+                RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");
+                rd.forward(request, response);
+            } else {
+                PrintWriter printWriter = response.getWriter();
+                printWriter.write("Incorrect name or password");
+                RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+                rd.include(request, response);
+                printWriter.close();
+            }
+
 
 
     }
