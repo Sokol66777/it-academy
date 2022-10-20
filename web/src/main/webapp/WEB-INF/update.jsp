@@ -9,17 +9,17 @@
     	<table>
 			<tr>
     			<td>User Name</td>
-        		<td><input type = "text" name="newUsername"  required="required"  value="<c:out value='${updateUser.username}'/>"/></td>
+        		<td><input type = "text" name="newUsername"  required="required"  value="<c:out value='${updateUsersUsername}'/>"/></td>
 			</tr>
     		<tr>
-    		    <c:if test="${user.username==updateUser.username}">
+    		    <c:if test="${username==updateUsersUsername}">
     			    <td>Password</td>
-        		    <td><input type = "password" name="password"  required="required" value="<c:out value='${updateUser.password}'/>"/></td>
+        		    <td><input type = "password" name="password"  required="required" value="<c:out value='${updateUsersPassword}'/>"/></td>
 			    </c:if>
 			</tr>
             <tr>
                 <td>Email</td>
-                <td><input type = "email" name="newEmail"  required="required" value="<c:out value='${updateUser.email}'/>"/></td>
+                <td><input type = "email" name="newEmail"  required="required" value="<c:out value='${updateUsersEmail}'/>"/></td>
             </tr>
         	<tr>
         		<td><input type = "submit" value="Update"/></td>
@@ -28,8 +28,8 @@
 	</form>
 	<button onclick ="location.href='welcome'" >welcome page</button>
 	<button onclick = "location.href='logout'"> logout </button>
-	 <c:if test="${user.role=='admin'}">
-                  <button onclick = "location.href='allUsers?adminName=${user.username}'">All users</button>
+	 <c:if test="${role=='admin'}">
+                  <button onclick = "location.href='allUsers?adminName=${username}'">All users</button>
      </c:if>
 
 </body>

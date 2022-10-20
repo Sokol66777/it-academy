@@ -1,57 +1,63 @@
 package UserImpl;
 
 
+import SQL.SQLConnection;
 import dao.UserModifyDAO;
 import model.Constants;
-import model.User;
 
+import java.sql.*;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UserModifyDAOImpl implements UserModifyDAO {
 
+    public void AddUser(String username,String password, String email) throws SQLException {
 
-
-    @Override
-    public void AddUser(User user) throws IOException {
-
-
-        File file = new File(Constants.FILE_PATH);
-        try (FileWriter pw = new FileWriter(file, true)) {
-            pw.write(user.toString() + "\n");
+        try(Connection connection = SQLConnection.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_ADD_INTO_USER);
+            preparedStatement.setString(1,username);
+            preparedStatement.setString(2,password);
+            preparedStatement.setString(3,email);
+            preparedStatement.executeUpdate();
         }
+
 
     }
 
     @Override
-    public void DeleteUser(String username) throws IOException {
-        String parts[];
-        List<String> allUsers = new ArrayList<>();
-        String line;
-        File file = new File(Constants.FILE_PATH);
-        try (BufferedReader bf = new BufferedReader(new FileReader(file))) {
-            line = bf.readLine();
-            while (line != null) {
-                if (!line.equals("")) {
-                    allUsers.add(line);
-                }
+    public void ModifyUser(String newUsername, String newEmail, String oldUsername) throws SQLException {
+        try(Connection connection = SQLConnection.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_UPDATE_USER_WHITHOUT_PASSWORD);
+            preparedStatement.setString(1,newUsername);
+            preparedStatement.setString(2,newEmail);
+            preparedStatement.setString(3,oldUsername);
+            preparedStatement.executeUpdate();
 
-                line = bf.readLine();
-            }
         }
-        try (FileWriter fw = new FileWriter(file)) {
-            fw.write("");
-        }
-        try (FileWriter fw = new FileWriter(file, true)) {
-            for (String user : allUsers) {
-                parts = user.split(",");
-                if (!parts[1].equals(username)) {
-                    fw.write(user + "\n");
-                }
-            }
+    }
 
+    @Override
+    public void ModifyUser(String newUsername, String newPassword, String newEmail, String oldUsername) throws SQLException {
+        try(Connection connection = SQLConnection.getConnection()) {
+           PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_UPDATE_USER_WHITH_PASSWORD);
+           preparedStatement.setString(1,newUsername);
+            preparedStatement.setString(2,newPassword);
+            preparedStatement.setString(3,newEmail);
+            preparedStatement.setString(4,oldUsername);
+           preparedStatement.executeUpdate();
+
+        }
+    }
+
+
+    @Override
+    public void DeleteUser(String username) {
+
+        try(Connection connection = SQLConnection.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_DELETE_FROM_USER);
+            preparedStatement.setString(1,username);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
     }

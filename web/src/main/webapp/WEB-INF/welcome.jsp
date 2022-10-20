@@ -10,12 +10,12 @@
 <body>
 
     <p>Welcome,
-       <c:out value="${user.username}"/></p>
+       <c:out value="${username}"/></p>
     <button onclick = "location.href='logout'"> logout </button>
-    <button onclick = "location.href='update?updateUsername=${user.username}'">Update</button>
+    <button onclick = "location.href='update?updateUsername=${username}'">Update</button>
 
-    <c:if test="${user.role=='admin'}">
-       <button onclick = "location.href='allUsers?adminName=${user.username}'">All users</button>
+    <c:if test="${role=='admin'}">
+       <button onclick = "location.href='allUsers?adminName=${username}'">All users</button>
     </c:if>
 
 
