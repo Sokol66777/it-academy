@@ -21,13 +21,14 @@ public class DeleteServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
         String username = request.getParameter("username");
         try {
             userDAO.DeleteUser(username);
         } catch (SQLException e) {
-            PrintWriter printWriter = response.getWriter();
-            printWriter.write(e.getMessage());
-            printWriter.close();
+            request.setAttribute("error",e.getMessage());
+            RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
+            rd.forward(request,response);
         }
         RequestDispatcher rd = request.getRequestDispatcher("allUsers");
         rd.forward(request,response);

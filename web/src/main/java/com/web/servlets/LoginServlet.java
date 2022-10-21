@@ -32,13 +32,15 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         User user = null;
+
         try {
             user = userDAO.getByUsername(name);
         } catch (SQLException e) {
-            PrintWriter printWriter = response.getWriter();
-            printWriter.write(e.getMessage());
-            printWriter.close();
+            request.setAttribute("error",e.getMessage());
+            RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
+            rd.forward(request,response);
         }
+
 
         if (user != null && user.getPassword().equals(password)) {
                 HttpSession session = request.getSession();

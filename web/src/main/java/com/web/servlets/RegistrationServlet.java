@@ -52,6 +52,7 @@ public class RegistrationServlet extends HttpServlet {
                newUser.setEmail(email);
                newUser.setPassword(password);
                newUser.setUsername(username);
+
                userDAO.AddUser(newUser);
 
                HttpSession session = request.getSession();

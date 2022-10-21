@@ -11,7 +11,7 @@ public class DataSourceConnectors {
 
     private ComboPooledDataSource comboPooledDataSource;
     private static DataSourceConnectors dataSourceConnectors;
-    private DataSourceConnectors() throws SQLException {
+    private DataSourceConnectors() {
         String driver = Constants.JDBC_DRIVER;
         String url = Constants.DATABASE_URL;
         String user = "root";
@@ -31,13 +31,13 @@ public class DataSourceConnectors {
             comboPooledDataSource.setAcquireIncrement(5);
             comboPooledDataSource.setMaxStatements(100);
         }catch (PropertyVetoException e){
-            throw new SQLException("connection is faild");
+            throw new RuntimeException(e);
         }
 
 
     }
 
-    public static DataSourceConnectors getInstance() throws SQLException {
+    public static DataSourceConnectors getInstance()  {
 
         if(dataSourceConnectors==null){
 

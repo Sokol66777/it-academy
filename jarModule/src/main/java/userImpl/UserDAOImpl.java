@@ -1,12 +1,10 @@
 package userImpl;
 
 import connectors.DataSourceConnectors;
-import SQL.SQLConnection;
 import dao.UserDAO;
 import model.Constants;
 import model.User;
 
-import java.beans.PropertyVetoException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -148,7 +146,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User get(long ID) {
+    public User get(long ID) throws SQLException {
 
         User user = null;
         try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
@@ -168,8 +166,6 @@ public class UserDAOImpl implements UserDAO {
                 user.setID(id);
                 user.setRole(role);
             }
-        } catch (SQLException e ) {
-            throw new RuntimeException(e);
         }
 
         return user;

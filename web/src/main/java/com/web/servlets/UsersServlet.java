@@ -27,22 +27,22 @@ public class UsersServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String adminName = (String) session.getAttribute("username");
         List<User> trueUsers = new ArrayList<User>();
+        List<User> users = null;
         try {
-
-            List<User> users = userDAO.getAllUsers();
-
-            for (User user : users) {
-                if (!user.getUsername().equals(adminName)) {
-                    trueUsers.add(user);
-                }
-            }
-            request.setAttribute("allUsers", trueUsers);
-        }catch (SQLException e){
-            PrintWriter printWriter = response.getWriter();
-            printWriter.write(e.getMessage());
-            printWriter.close();
+            users = userDAO.getAllUsers();
+        } catch (SQLException e) {
+            request.setAttribute("error",e.getMessage());
+            RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
+            rd.forward(request,response);
         }
 
+        for (User user : users) {
+            if (!user.getUsername().equals(adminName)) {
+                trueUsers.add(user);
+            }
+        }
+
+        request.setAttribute("allUsers", trueUsers);
         RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/users.jsp");
         rd.forward(request,response);
 
