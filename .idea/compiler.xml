@@ -10,10 +10,10 @@
         <module name="jarModule" />
       </profile>
     </annotationProcessing>
-  </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="web" options="" />
-    </option>
+    <bytecodeTargetLevel>
+      <module name="it-academy" target="11" />
+      <module name="jarModule" target="11" />
+      <module name="web" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

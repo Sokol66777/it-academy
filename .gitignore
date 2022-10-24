@@ -1,3 +1,5 @@
 /.idea/
 /jarModule/target/
 /web/target/
+/jarModule/jarModule.iml
+/web/web.iml
