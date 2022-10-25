@@ -5,6 +5,7 @@ import dao.UserDAO;
 import model.Constants;
 import model.User;
 
+import java.beans.PropertyVetoException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ public class UserDAOImpl implements UserDAO {
 
 
     @Override
-    public List<User> getAllUsers() throws SQLException {
+    public List<User> getAllUsers() throws SQLException, PropertyVetoException {
         List<User> users = new ArrayList<>();
         try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
             Statement statement = connection.createStatement();
@@ -40,7 +41,7 @@ public class UserDAOImpl implements UserDAO {
 
 
     @Override
-    public User getByUsername(String username) throws SQLException {
+    public User getByUsername(String username) throws SQLException, PropertyVetoException {
         User user=null;
 
         try (Connection connection = DataSourceConnectors.getInstance().getConnection()){
@@ -69,7 +70,7 @@ public class UserDAOImpl implements UserDAO {
 
 
     @Override
-    public User getByEmail(String email) {
+    public User getByEmail(String email) throws PropertyVetoException {
        User user = null;
        try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
            PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_GET_BY_EMAIL);
@@ -96,7 +97,7 @@ public class UserDAOImpl implements UserDAO {
 
 
     @Override
-    public void Delete(String username) throws SQLException {
+    public void Delete(String username) throws SQLException, PropertyVetoException {
 
         try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_DELETE_FROM_USER);
@@ -108,7 +109,7 @@ public class UserDAOImpl implements UserDAO {
 
 
     @Override
-    public void Add(User user) throws SQLException {
+    public void Add(User user) throws SQLException, PropertyVetoException {
 
         try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_ADD_INTO_USER);
@@ -121,7 +122,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void Modify(User user) throws SQLException {
+    public void Modify(User user) throws SQLException, PropertyVetoException {
 
         try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
             PreparedStatement preparedStatement;
@@ -146,7 +147,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User get(long ID) throws SQLException {
+    public User get(long ID) throws SQLException, PropertyVetoException {
 
         User user = null;
         try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {

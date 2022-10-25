@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -24,7 +25,7 @@ public class DeleteServlet extends HttpServlet {
         String username = request.getParameter("username");
         try {
             userDAO.Delete(username);
-        } catch (SQLException e) {
+        } catch (SQLException | PropertyVetoException e) {
             request.setAttribute("error",e.getMessage());
             RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
             rd.forward(request,response);
@@ -36,8 +37,5 @@ public class DeleteServlet extends HttpServlet {
 
 
 
-    @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response){
 
-    }
 }

@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import model.User;
 import validation.ValidationParametrs;
 
+import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -67,6 +68,10 @@ public class RegistrationServlet extends HttpServlet {
               RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/add.jsp");
               rd.include(request,response);
               printWriter.close();
+           } catch (PropertyVetoException e){
+               request.setAttribute("error",e.getMessage());
+               RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
+               rd.forward(request,response);
            }
 
        }

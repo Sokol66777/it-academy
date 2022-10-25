@@ -11,14 +11,14 @@ public class DataSourceConnectors {
 
     private ComboPooledDataSource comboPooledDataSource;
     private static DataSourceConnectors dataSourceConnectors;
-    private DataSourceConnectors() {
+    private DataSourceConnectors() throws PropertyVetoException {
         String driver = Constants.JDBC_DRIVER;
         String url = Constants.DATABASE_URL;
         String user = "root";
         String password = "root";
 
         comboPooledDataSource = new ComboPooledDataSource();
-        try {
+
 
 
             comboPooledDataSource.setDriverClass(driver);
@@ -30,14 +30,12 @@ public class DataSourceConnectors {
             comboPooledDataSource.setMaxPoolSize(20);
             comboPooledDataSource.setAcquireIncrement(5);
             comboPooledDataSource.setMaxStatements(100);
-        }catch (PropertyVetoException e){
-            throw new RuntimeException(e);
-        }
+
 
 
     }
 
-    public static DataSourceConnectors getInstance()  {
+    public static DataSourceConnectors getInstance() throws PropertyVetoException {
 
         if(dataSourceConnectors==null){
 

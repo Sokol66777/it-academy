@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class UsersServlet extends HttpServlet {
         List<User> users = null;
         try {
             users = userDAO.getAllUsers();
-        } catch (SQLException e) {
+        } catch (SQLException | PropertyVetoException e) {
             request.setAttribute("error",e.getMessage());
             RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
             rd.forward(request,response);
@@ -47,7 +48,5 @@ public class UsersServlet extends HttpServlet {
 
     }
 
-    @Override
-    public void doPost(HttpServletRequest request,HttpServletResponse response) throws IOException, ServletException {
-    }
+
 }
