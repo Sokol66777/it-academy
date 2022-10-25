@@ -34,11 +34,13 @@ public class UpdateServlet extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
             rd.forward(request,response);
         }
-        HttpSession session = request.getSession();
-        session.setAttribute("updateUser", updateUser);
-        session.setAttribute("updateUsersUsername", updateUsersUsername);
-        session.setAttribute("updateUsersPassword", updateUser.getPassword());
-        session.setAttribute("updateUsersEmail", updateUser.getEmail());
+        if (updateUser!=null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("updateUser", updateUser);
+            session.setAttribute("updateUsersUsername", updateUsersUsername);
+            session.setAttribute("updateUsersPassword", updateUser.getPassword());
+            session.setAttribute("updateUsersEmail", updateUser.getEmail());
+        }
         RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/update.jsp");
         rd.forward(request, response);
 
@@ -65,7 +67,9 @@ public class UpdateServlet extends HttpServlet {
             updateUser = new User();
             updateUser.setUsername(newUsername);
             updateUser.setEmail(newEmail);
-            updateUser.setID(user.getID());
+            if(user!=null) {
+                updateUser.setID(user.getID());
+            }
 
             if (password.equals("")){
                 userDAO.Modify(updateUser);

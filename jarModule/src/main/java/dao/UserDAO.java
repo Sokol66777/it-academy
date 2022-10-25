@@ -10,6 +10,6 @@ import java.util.List;
 public interface UserDAO extends DAO<User> {
     List<User> getAllUsers() throws SQLException, PropertyVetoException;
     User getByUsername(String username) throws SQLException, PropertyVetoException;
-    User getByEmail(String email) throws PropertyVetoException;
+    User getByEmail(String email) throws PropertyVetoException, SQLException;
 
 }

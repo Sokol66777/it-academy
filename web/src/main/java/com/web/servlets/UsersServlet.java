@@ -36,9 +36,11 @@ public class UsersServlet extends HttpServlet {
             rd.forward(request,response);
         }
 
-        for (User user : users) {
-            if (!user.getUsername().equals(adminName)) {
-                trueUsers.add(user);
+        if(users!=null) {
+            for (User user : users) {
+                if (!user.getUsername().equals(adminName)) {
+                    trueUsers.add(user);
+                }
             }
         }
 
