@@ -21,7 +21,7 @@ public class UserDAOImpl implements UserDAO {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(Constants.SQL_GET_ALL_USERS);
             while (resultSet.next()){
-                user = ResultSetToUser(resultSet);
+                user = resultSetToUser(resultSet);
                 users.add(user);
             }
         }
@@ -41,7 +41,7 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setString(1,username);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                user = ResultSetToUser(resultSet);
+                user = resultSetToUser(resultSet);
             }
 
         }
@@ -59,7 +59,7 @@ public class UserDAOImpl implements UserDAO {
            preparedStatement.setString(1,email);
            ResultSet resultSet = preparedStatement.executeQuery();
            while (resultSet.next()){
-               user = ResultSetToUser(resultSet);
+               user = resultSetToUser(resultSet);
            }
        }
         return user;
@@ -67,7 +67,7 @@ public class UserDAOImpl implements UserDAO {
 
 
     @Override
-    public void Delete(String username) throws SQLException, PropertyVetoException {
+    public void delete(String username) throws SQLException, PropertyVetoException {
 
         try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_DELETE_FROM_USER);
@@ -79,7 +79,7 @@ public class UserDAOImpl implements UserDAO {
 
 
     @Override
-    public void Add(User user) throws SQLException, PropertyVetoException {
+    public void add(User user) throws SQLException, PropertyVetoException {
 
         try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_ADD_INTO_USER);
@@ -92,7 +92,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void Modify(User user) throws SQLException, PropertyVetoException {
+    public void modify(User user) throws SQLException, PropertyVetoException {
 
         try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
             PreparedStatement preparedStatement;
@@ -125,13 +125,13 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setLong(1,ID);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                user = ResultSetToUser(resultSet);
+                user = resultSetToUser(resultSet);
             }
         }
 
         return user;
     }
-    private User ResultSetToUser(ResultSet resultSet) throws SQLException {
+    private User resultSetToUser(ResultSet resultSet) throws SQLException {
         User user = new User();
 
         long id = resultSet.getLong("ID");

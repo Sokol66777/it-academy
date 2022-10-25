@@ -24,7 +24,7 @@ public class DeleteServlet extends HttpServlet {
 
         String username = request.getParameter("username");
         try {
-            userDAO.Delete(username);
+            userDAO.delete(username);
         } catch (SQLException | PropertyVetoException e) {
             request.setAttribute("error",e.getMessage());
             RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
