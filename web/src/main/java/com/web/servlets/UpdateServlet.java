@@ -67,11 +67,11 @@ public class UpdateServlet extends HttpServlet {
             updateUser.setID(user.getID());
 
             if (password.equals("")){
-                userDAO.ModifyUser(updateUser);
+                userDAO.Modify(updateUser);
             }
             else{
                 updateUser.setPassword(password);
-                userDAO.ModifyUser(updateUser);
+                userDAO.Modify(updateUser);
             }
 
             if(updateUsersUsername.equals(session.getAttribute("username"))){

@@ -29,7 +29,7 @@
 	<button onclick ="location.href='welcome'" >welcome page</button>
 	<button onclick = "location.href='logout'"> logout </button>
 	 <c:if test="${role=='admin'}">
-                  <button onclick = "location.href='allUsers?adminName=${username}'">All users</button>
+        <button onclick = "location.href='allUsers?adminName=${username}'">All users</button>
      </c:if>
 
 </body>

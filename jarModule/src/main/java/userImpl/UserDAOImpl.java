@@ -96,7 +96,7 @@ public class UserDAOImpl implements UserDAO {
 
 
     @Override
-    public void DeleteUser(String username) throws SQLException {
+    public void Delete(String username) throws SQLException {
 
         try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_DELETE_FROM_USER);
@@ -108,7 +108,7 @@ public class UserDAOImpl implements UserDAO {
 
 
     @Override
-    public void AddUser(User user) throws SQLException {
+    public void Add(User user) throws SQLException {
 
         try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_ADD_INTO_USER);
@@ -121,7 +121,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void ModifyUser(User user) throws SQLException {
+    public void Modify(User user) throws SQLException {
 
         try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
             PreparedStatement preparedStatement;

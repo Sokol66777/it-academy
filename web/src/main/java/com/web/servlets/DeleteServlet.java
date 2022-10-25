@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 
 @WebServlet(name= "DeleteServlet", urlPatterns = {"/delete"})
@@ -24,7 +23,7 @@ public class DeleteServlet extends HttpServlet {
 
         String username = request.getParameter("username");
         try {
-            userDAO.DeleteUser(username);
+            userDAO.Delete(username);
         } catch (SQLException e) {
             request.setAttribute("error",e.getMessage());
             RequestDispatcher rd = request.getRequestDispatcher("error.jsp");

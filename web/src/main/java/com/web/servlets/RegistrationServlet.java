@@ -53,7 +53,7 @@ public class RegistrationServlet extends HttpServlet {
                newUser.setPassword(password);
                newUser.setUsername(username);
 
-               userDAO.AddUser(newUser);
+               userDAO.Add(newUser);
 
                HttpSession session = request.getSession();
                session.setAttribute("username", username);

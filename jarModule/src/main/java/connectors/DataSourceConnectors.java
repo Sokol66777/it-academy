@@ -15,7 +15,7 @@ public class DataSourceConnectors {
         String driver = Constants.JDBC_DRIVER;
         String url = Constants.DATABASE_URL;
         String user = "root";
-        String password = "gfdj3lkm,.b31?";
+        String password = "root";
 
         comboPooledDataSource = new ComboPooledDataSource();
         try {
