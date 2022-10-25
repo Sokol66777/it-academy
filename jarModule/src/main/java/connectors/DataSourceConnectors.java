@@ -19,17 +19,15 @@ public class DataSourceConnectors {
 
         comboPooledDataSource = new ComboPooledDataSource();
 
+        comboPooledDataSource.setDriverClass(driver);
+        comboPooledDataSource.setJdbcUrl(url);
+        comboPooledDataSource.setUser(user);
+        comboPooledDataSource.setPassword(password);
 
-
-            comboPooledDataSource.setDriverClass(driver);
-            comboPooledDataSource.setJdbcUrl(url);
-            comboPooledDataSource.setUser(user);
-            comboPooledDataSource.setPassword(password);
-
-            comboPooledDataSource.setMinPoolSize(5);
-            comboPooledDataSource.setMaxPoolSize(20);
-            comboPooledDataSource.setAcquireIncrement(5);
-            comboPooledDataSource.setMaxStatements(100);
+        comboPooledDataSource.setMinPoolSize(5);
+        comboPooledDataSource.setMaxPoolSize(20);
+        comboPooledDataSource.setAcquireIncrement(5);
+        comboPooledDataSource.setMaxStatements(100);
 
 
 
