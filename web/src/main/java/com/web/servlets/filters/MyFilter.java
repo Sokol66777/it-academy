@@ -17,7 +17,7 @@ public class MyFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest)request;
         HttpSession session = req.getSession();
-        if(session==null||session.getAttribute("username")==null){
+        if(session.getAttribute("username")==null){
             RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
             rd.forward(request,response);
         }
