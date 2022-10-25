@@ -33,6 +33,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User getByUsername(String username) throws SQLException, PropertyVetoException {
+
         User user=null;
 
         try (Connection connection = DataSourceConnectors.getInstance().getConnection()){
