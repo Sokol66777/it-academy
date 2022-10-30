@@ -11,7 +11,6 @@ import java.io.IOException;
 @WebFilter(servletNames = {"WelcomeServlet","UsersServlet","UpdateServlet","DeleteServlet"})
 public class MyFilter implements Filter {
 
-
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest)request;
         HttpSession session = req.getSession();
@@ -21,6 +20,4 @@ public class MyFilter implements Filter {
         }
         chain.doFilter(request,response);
     }
-
-
 }
