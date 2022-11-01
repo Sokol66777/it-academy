@@ -1,3 +1,4 @@
 /.idea/
 /jarModule/target/
 /web/target/
+/jarModule/src/main/java/Main.java

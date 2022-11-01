@@ -13,8 +13,8 @@ public class Constants {
     public static final String SQL_GET_ALL_USERS = "SELECT * FROM user";
     public static final String SQL_DELETE_FROM_USER = "DELETE FROM user WHERE name = ?";
     public static final String SQL_ADD_INTO_USER = "INSERT INTO user(name,password,email) VALUES (?,?,?)";
-    public static final String SQL_UPDATE_USER_WHITH_PASSWORD = "UPDATE user SET name = ?, password = ?, email = ? WHERE name = ?";
-    public static final String SQL_UPDATE_USER_WHITHOUT_PASSWORD = "UPDATE user SET name = ?, email = ? WHERE name = ?";
+    public static final String SQL_UPDATE_USER_WHITH_PASSWORD = "UPDATE user SET name = ?, password = ?, email = ? WHERE ID = ?";
+    public static final String SQL_UPDATE_USER_WHITHOUT_PASSWORD = "UPDATE user SET name = ?, email = ? WHERE ID = ?";
 
 
 

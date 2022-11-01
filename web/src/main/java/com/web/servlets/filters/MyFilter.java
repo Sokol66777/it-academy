@@ -10,21 +10,14 @@ import java.io.IOException;
 
 @WebFilter(servletNames = {"WelcomeServlet","UsersServlet","UpdateServlet","DeleteServlet"})
 public class MyFilter implements Filter {
-    public void init(FilterConfig filterConfig) throws ServletException {
-
-    }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest)request;
         HttpSession session = req.getSession();
-        if(session==null||session.getAttribute("username")==null){
+        if(session.getAttribute("username")==null){
             RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
             rd.forward(request,response);
         }
         chain.doFilter(request,response);
-    }
-
-    public void destroy() {
-
     }
 }

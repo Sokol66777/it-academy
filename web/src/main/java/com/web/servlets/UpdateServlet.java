@@ -1,10 +1,8 @@
 package com.web.servlets;
 
-import Exceptions.RepeatedDataException;
-import UserImpl.UserDAOImpl;
-import UserImpl.UserModifyDAOImpl;
+import exceptions.RepeatedDataException;
+import userImpl.UserDAOImpl;
 import dao.UserDAO;
-import dao.UserModifyDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import model.User;
 import validation.ValidationParametrs;
 
+import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -23,23 +22,33 @@ import java.sql.SQLException;
 public class UpdateServlet extends HttpServlet {
 
     public final UserDAO userDAO = new UserDAOImpl();
-    public final UserModifyDAO userModifyDAO = new UserModifyDAOImpl();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String updateUsersUsername = request.getParameter("updateUsername");
-        User updateUser = userDAO.getByUsername(updateUsersUsername);
-        HttpSession session = request.getSession();
-        session.setAttribute("updateUser",updateUser);
-        session.setAttribute("updateUsersUsername",updateUsersUsername);
-        session.setAttribute("updateUsersPassword",updateUser.getPassword());
-        session.setAttribute("updateUsersEmail",updateUser.getEmail());
+        User updateUser = null;
+        try {
+            updateUser = userDAO.getByUsername(updateUsersUsername);
+        } catch (SQLException | PropertyVetoException e) {
+            request.setAttribute("error",e.getMessage());
+            RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
+            rd.forward(request,response);
+        }
+        if (updateUser!=null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("updateUser", updateUser);
+            session.setAttribute("updateUsersUsername", updateUsersUsername);
+            session.setAttribute("updateUsersPassword", updateUser.getPassword());
+            session.setAttribute("updateUsersEmail", updateUser.getEmail());
+        }
         RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/update.jsp");
-        rd.forward(request,response);
+        rd.forward(request, response);
+
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        User updateUser;
         response.setContentType("text/html");
         HttpSession session = request.getSession();
         String password="";
@@ -53,11 +62,21 @@ public class UpdateServlet extends HttpServlet {
             if(!password.equals("")) {
                 ValidationParametrs.validationPassword(password);
             }
+
+            User user = userDAO.getByUsername(updateUsersUsername);
+            updateUser = new User();
+            updateUser.setUsername(newUsername);
+            updateUser.setEmail(newEmail);
+            if(user!=null) {
+                updateUser.setID(user.getID());
+            }
+
             if (password.equals("")){
-                userModifyDAO.ModifyUser(newUsername,newEmail,updateUsersUsername);
+                userDAO.modify(updateUser);
             }
             else{
-                userModifyDAO.ModifyUser(newUsername,password,newEmail,updateUsersUsername);
+                updateUser.setPassword(password);
+                userDAO.modify(updateUser);
             }
 
             if(updateUsersUsername.equals(session.getAttribute("username"))){
@@ -73,6 +92,10 @@ public class UpdateServlet extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/update.jsp");
             rd.include(request,response);
             printWriter.close();
+            rd.forward(request,response);
+        } catch (PropertyVetoException e){
+            request.setAttribute("error",e.getMessage());
+            RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
             rd.forward(request,response);
         }
 

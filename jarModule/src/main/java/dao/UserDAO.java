@@ -1,17 +1,15 @@
 package dao;
 
+
 import model.User;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.beans.PropertyVetoException;
+import java.sql.SQLException;
 import java.util.List;
 
-public interface UserDAO {
-    List<User> getAllUsers() ;
-    User getByUsername(String username);
-
-    User getByID(long ID);
-
-    User getByEmail(String email);
+public interface UserDAO extends DAO<User> {
+    List<User> getAllUsers() throws SQLException, PropertyVetoException;
+    User getByUsername(String username) throws SQLException, PropertyVetoException;
+    User getByEmail(String email) throws PropertyVetoException, SQLException;
 
 }
