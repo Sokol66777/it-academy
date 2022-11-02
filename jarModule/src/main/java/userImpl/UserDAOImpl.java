@@ -1,6 +1,7 @@
 package userImpl;
 
 import connectors.DataSourceConnectors;
+import dao.AbstractJPADAO;
 import dao.UserDAO;
 import model.Constants;
 import model.User;
@@ -10,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAOImpl implements UserDAO {
+public class UserDAOImpl extends AbstractJPADAO implements UserDAO {
 
 
     @Override
@@ -30,7 +31,6 @@ public class UserDAOImpl implements UserDAO {
         return users;
     }
 
-
     @Override
     public User getByUsername(String username) throws SQLException, PropertyVetoException {
 
@@ -49,8 +49,6 @@ public class UserDAOImpl implements UserDAO {
         return user;
     }
 
-
-
     @Override
     public User getByEmail(String email) throws PropertyVetoException, SQLException {
        User user = null;
@@ -65,29 +63,23 @@ public class UserDAOImpl implements UserDAO {
         return user;
     }
 
-
     @Override
-    public void delete(String username) throws SQLException, PropertyVetoException {
-
-        try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_DELETE_FROM_USER);
-            preparedStatement.setString(1,username);
-            preparedStatement.executeUpdate();
-        }
+    public void delete(long id)  {
+        init();
+        User deleteUser = entityManager.find(User.class,id);
+        entityManager.remove(deleteUser);
+        close();
 
     }
 
 
     @Override
-    public void add(User user) throws SQLException, PropertyVetoException {
+    public void add(User user) {
 
-        try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_ADD_INTO_USER);
-            preparedStatement.setString(1, user.getUsername());
-            preparedStatement.setString(2,user.getPassword());
-            preparedStatement.setString(3,user.getEmail());
-            preparedStatement.executeUpdate();
-        }
+        user.setRole("user");
+        init();
+        entityManager.persist(user);
+        close();
 
     }
 
@@ -117,19 +109,13 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User get(long ID) throws SQLException, PropertyVetoException {
+    public User get(long ID)  {
 
-        User user = null;
-        try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_GET_BY_ID);
-            preparedStatement.setLong(1,ID);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                user = resultSetToUser(resultSet);
-            }
-        }
-
+        init();
+        User user = entityManager.find(User.class,ID);
+        close();
         return user;
+
     }
     private User resultSetToUser(ResultSet resultSet) throws SQLException {
         User user = new User();

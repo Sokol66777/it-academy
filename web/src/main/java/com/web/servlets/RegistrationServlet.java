@@ -62,16 +62,12 @@ public class RegistrationServlet extends HttpServlet {
                RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");
                rd.forward(request,response);
 
-           } catch (RepeatedDataException | SQLException e) {
+           } catch (RepeatedDataException e) {
               PrintWriter printWriter=response.getWriter();
               printWriter.write(e.getMessage());
               RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/add.jsp");
               rd.include(request,response);
               printWriter.close();
-           } catch (PropertyVetoException e){
-               request.setAttribute("error",e.getMessage());
-               RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
-               rd.forward(request,response);
            }
 
        }

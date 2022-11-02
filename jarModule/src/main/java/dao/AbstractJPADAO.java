@@ -10,7 +10,7 @@ public class AbstractJPADAO {
 
     public void init(){
 
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("com.pvt");
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("it-academy");
         entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
 
