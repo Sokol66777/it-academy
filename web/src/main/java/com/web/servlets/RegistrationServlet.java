@@ -1,6 +1,6 @@
 package com.web.servlets;
 
-import exceptions.RepeatedDataException;
+import exceptions.UserLogicException;
 import userImpl.UserDAOImpl;
 import dao.UserDAO;
 import jakarta.servlet.RequestDispatcher;
@@ -13,10 +13,8 @@ import jakarta.servlet.http.HttpSession;
 import model.User;
 import validation.ValidationParametrs;
 
-import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 
 @WebServlet(name = "RegistrationServlet", urlPatterns = {"/add"})
 public class RegistrationServlet extends HttpServlet {
@@ -62,7 +60,7 @@ public class RegistrationServlet extends HttpServlet {
                RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");
                rd.forward(request,response);
 
-           } catch (RepeatedDataException e) {
+           } catch (UserLogicException e) {
               PrintWriter printWriter=response.getWriter();
               printWriter.write(e.getMessage());
               RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/add.jsp");

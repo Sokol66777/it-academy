@@ -3,6 +3,8 @@ package userImpl;
 import connectors.DataSourceConnectors;
 import dao.AbstractJPADAO;
 import dao.UserDAO;
+import exceptions.UserLogicException;
+import jakarta.persistence.RollbackException;
 import model.Constants;
 import model.User;
 
@@ -74,38 +76,32 @@ public class UserDAOImpl extends AbstractJPADAO implements UserDAO {
 
 
     @Override
-    public void add(User user) {
+    public void add(User user) throws UserLogicException {
 
         user.setRole("user");
-        init();
-        entityManager.persist(user);
-        close();
+        try {
+            init();
+            entityManager.persist(user);
+            close();
+        }catch (RollbackException e){
+            entityManager.getTransaction().rollback();
+            throw new UserLogicException(e);
+        }
 
     }
 
     @Override
-    public void modify(User user) throws SQLException, PropertyVetoException {
+    public void modify(User user) throws UserLogicException {
 
-        try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
-            PreparedStatement preparedStatement;
-            if(user.getPassword()!=null) {
-                preparedStatement = connection.prepareStatement(Constants.SQL_UPDATE_USER_WHITH_PASSWORD);
-                preparedStatement.setString(1, user.getUsername());
-                preparedStatement.setString(2, user.getPassword());
-                preparedStatement.setString(3, user.getEmail());
-                preparedStatement.setLong(4, user.getID());
-            }else{
-
-                preparedStatement = connection.prepareStatement(Constants.SQL_UPDATE_USER_WHITHOUT_PASSWORD);
-                preparedStatement.setString(1, user.getUsername());
-                preparedStatement.setString(2, user.getEmail());
-                preparedStatement.setLong(3,user.getID());
-
-
-            }
-            preparedStatement.executeUpdate();
-
+        try {
+            init();
+            entityManager.merge(user);
+            close();
+        }catch (RollbackException e){
+            entityManager.getTransaction().rollback();
+            throw new UserLogicException(e);
         }
+
     }
 
     @Override

@@ -48,6 +48,7 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("username", user.getUsername());
                 session.setAttribute("role", user.getRole());
+                session.setAttribute("ID", user.getID());
                 RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");
                 rd.forward(request, response);
             } else {

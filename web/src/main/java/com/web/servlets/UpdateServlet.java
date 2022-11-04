@@ -1,6 +1,6 @@
 package com.web.servlets;
 
-import exceptions.RepeatedDataException;
+import exceptions.UserLogicException;
 import userImpl.UserDAOImpl;
 import dao.UserDAO;
 import jakarta.servlet.RequestDispatcher;
@@ -69,9 +69,11 @@ public class UpdateServlet extends HttpServlet {
             updateUser.setEmail(newEmail);
             if(user!=null) {
                 updateUser.setID(user.getID());
+                updateUser.setRole(user.getRole());
             }
 
             if (password.equals("")){
+                updateUser.setPassword(user.getPassword());
                 userDAO.modify(updateUser);
             }
             else{
@@ -85,7 +87,7 @@ public class UpdateServlet extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");
             rd.forward(request,response);
 
-        } catch (RepeatedDataException | SQLException e) {
+        } catch (UserLogicException | SQLException e) {
 
             PrintWriter printWriter = response.getWriter();
             printWriter.write(e.getMessage());
