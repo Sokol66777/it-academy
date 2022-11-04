@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.User;
-import validation.ValidationParametrs;
+import validation.ValidationUsersParametrs;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -45,7 +45,7 @@ public class RegistrationServlet extends HttpServlet {
            printWriter.close();
        }else{
            try {
-               ValidationParametrs.validationPassword(password);
+               ValidationUsersParametrs.validationPassword(password);
 
                User newUser = new User();
                newUser.setEmail(email);

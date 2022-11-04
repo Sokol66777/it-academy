@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.User;
-import validation.ValidationParametrs;
+import validation.ValidationUsersParametrs;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;
@@ -26,14 +26,8 @@ public class UpdateServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String updateUsersUsername = request.getParameter("updateUsername");
-        User updateUser = null;
-        try {
-            updateUser = userDAO.getByUsername(updateUsersUsername);
-        } catch (SQLException | PropertyVetoException e) {
-            request.setAttribute("error",e.getMessage());
-            RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
-            rd.forward(request,response);
-        }
+        User updateUser = userDAO.getByUsername(updateUsersUsername);
+
         if (updateUser!=null) {
             HttpSession session = request.getSession();
             session.setAttribute("updateUser", updateUser);
@@ -60,7 +54,7 @@ public class UpdateServlet extends HttpServlet {
         }
         try {
             if(!password.equals("")) {
-                ValidationParametrs.validationPassword(password);
+                ValidationUsersParametrs.validationPassword(password);
             }
 
             User user = userDAO.getByUsername(updateUsersUsername);
@@ -87,7 +81,7 @@ public class UpdateServlet extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");
             rd.forward(request,response);
 
-        } catch (UserLogicException | SQLException e) {
+        } catch (UserLogicException e) {
 
             PrintWriter printWriter = response.getWriter();
             printWriter.write(e.getMessage());
@@ -95,12 +89,6 @@ public class UpdateServlet extends HttpServlet {
             rd.include(request,response);
             printWriter.close();
             rd.forward(request,response);
-        } catch (PropertyVetoException e){
-            request.setAttribute("error",e.getMessage());
-            RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
-            rd.forward(request,response);
         }
-
-
     }
 }

@@ -34,15 +34,7 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         User user = null;
-
-        try {
-            user = userDAO.getByUsername(name);
-        } catch (SQLException | PropertyVetoException e) {
-            request.setAttribute("error",e.getMessage());
-            RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
-            rd.forward(request,response);
-        }
-
+        user = userDAO.getByUsername(name);
 
         if (user != null && user.getPassword().equals(password)) {
                 HttpSession session = request.getSession();

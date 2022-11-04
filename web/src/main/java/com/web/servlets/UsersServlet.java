@@ -28,13 +28,7 @@ public class UsersServlet extends HttpServlet {
         String adminName = (String) session.getAttribute("username");
         List<User> trueUsers = new ArrayList<User>();
         List<User> users = null;
-        try {
-            users = userDAO.getAllUsers();
-        } catch (SQLException | PropertyVetoException e) {
-            request.setAttribute("error",e.getMessage());
-            RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
-            rd.forward(request,response);
-        }
+        users = userDAO.getAllUsers();
 
         if(users!=null) {
             for (User user : users) {
