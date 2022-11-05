@@ -16,13 +16,13 @@ import lombok.NoArgsConstructor;
 @Table(name="user")
 
 public class User {
-    @Column(name = "name")
+    @Column(name = "name",unique = true,nullable = false)
     private String username;
-    @Column(name="email")
+    @Column(name="email",unique = true,nullable = false)
     private String email;
-    @Column(name="password")
+    @Column(name="password",nullable = false)
     private String password;
-    @Column(name="role")
+    @Column(name="role",nullable = false)
     private String role;
     @Id
     private long ID;
