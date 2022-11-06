@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +18,9 @@ import java.util.Set;
 @Entity
 @Table(name="user")
 
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     @Column(name = "name",unique = true,nullable = false)
     private String username;
     @Column(name="email",unique = true,nullable = false)
@@ -27,11 +30,20 @@ public class User {
     @Column(name="role",nullable = false)
     private String role;
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set <Post> posts;
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
+    private Set <Post> posts=new HashSet<>();
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "User_Topic",
+            joinColumns = {@JoinColumn(name = "user_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "topic_ID")}
+    )
+    private Set<Topic> topics;
+
     @Override
     public String toString() {
         return ID+","+ username+',' + password+ ',' + email + ',' + role   ;

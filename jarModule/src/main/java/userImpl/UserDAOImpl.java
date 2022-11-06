@@ -19,6 +19,7 @@ public class UserDAOImpl extends AbstractJPADAO implements UserDAO {
         init();
         TypedQuery<User> namedQuery = entityManager.createNamedQuery("User.getAllUsers", User.class);
         List<User> users = namedQuery.getResultList();
+        close();
         return users;
     }
 
