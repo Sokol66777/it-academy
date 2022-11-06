@@ -41,7 +41,6 @@ public class UserDAOImpl extends AbstractJPADAO implements UserDAO {
 
     @Override
     public User getByEmail(String email) {
-
         User user;
         try {
             init();

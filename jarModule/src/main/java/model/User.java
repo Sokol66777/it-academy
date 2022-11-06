@@ -27,6 +27,7 @@ public class User {
     @Column(name="role",nullable = false)
     private String role;
     @Id
+    @GeneratedValue
     private long ID;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
