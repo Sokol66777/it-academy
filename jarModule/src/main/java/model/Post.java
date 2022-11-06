@@ -20,4 +20,8 @@ public class Post {
     private String name;
     @Column(name = "text",nullable = false)
     private String text;
+
+    @ManyToOne()
+    @JoinColumn(name = "user_ID")
+    private User user;
 }

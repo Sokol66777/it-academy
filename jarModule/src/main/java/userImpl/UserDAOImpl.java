@@ -2,9 +2,9 @@ package userImpl;
 
 import dao.AbstractJPADAO;
 import dao.UserDAO;
+import exceptions.LogicException;
 import exceptions.UserLogicException;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.RollbackException;
 import jakarta.persistence.TypedQuery;
 import model.User;
 

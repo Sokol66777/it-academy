@@ -1,6 +1,8 @@
 package dao;
 
+import exceptions.LogicException;
 import exceptions.UserLogicException;
+import model.User;
 
 import java.beans.PropertyVetoException;
 import java.sql.SQLException;

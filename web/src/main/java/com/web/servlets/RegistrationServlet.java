@@ -1,5 +1,6 @@
 package com.web.servlets;
 
+import exceptions.LogicException;
 import exceptions.UserLogicException;
 import userImpl.UserDAOImpl;
 import dao.UserDAO;
