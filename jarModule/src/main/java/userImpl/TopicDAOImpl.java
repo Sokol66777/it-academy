@@ -47,13 +47,13 @@ public class TopicDAOImpl extends AbstractJPADAO implements TopicDAO {
     }
 
     @Override
-    public Set<Topic> getAll() {
+    public List<Topic> getAll() {
 
         init();
         TypedQuery<Topic> namedQuery = entityManager.createNamedQuery("Topic.getAllTopics", Topic.class);
         List<Topic> topics = namedQuery.getResultList();
         close();
-        return new HashSet<>(topics);
+        return topics;
     }
 
     @Override

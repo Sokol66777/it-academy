@@ -11,12 +11,24 @@
 
     <p>Welcome,
        <c:out value="${username}"/></p>
+
+    <p2>All Topics</p>
+
+    <c:if test="${role=='admin'}">
+        <c:forEach var="topic" items = "${allTopics}">
+            <p><c:out value="${topic.name}"/></p>
+        </c:forEach>
+    </c:if>
+
     <button onclick = "location.href='logout'"> logout </button>
     <button onclick = "location.href='update?updateUsername=${username}'">Update</button>
 
     <c:if test="${role=='admin'}">
+       <button onclick = "location.href='addTopic'">Add topic</button>
        <button onclick = "location.href='allUsers?adminName=${username}'">All users</button>
     </c:if>
+
+
 
 
 </body>

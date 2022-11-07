@@ -1,4 +1,7 @@
 package com.web.servlets;
+import dao.TopicDAO;
+import model.Topic;
+import userImpl.TopicDAOImpl;
 import userImpl.UserDAOImpl;
 import dao.UserDAO;
 import jakarta.servlet.RequestDispatcher;
@@ -12,6 +15,7 @@ import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Set;
 
 import jakarta.servlet.http.HttpSession;
 import model.User;
@@ -21,6 +25,7 @@ import model.User;
 public class LoginServlet extends HttpServlet {
 
     public final UserDAO userDAO = new UserDAOImpl();
+    public final TopicDAO topicDAO = new TopicDAOImpl();
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
@@ -41,6 +46,9 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("username", user.getUsername());
                 session.setAttribute("role", user.getRole());
                 session.setAttribute("ID", user.getID());
+                if(user.getRole().equals("admin")){
+                    session.setAttribute("allTopics", topicDAO.getAll());
+                }
                 RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");
                 rd.forward(request, response);
             } else {
