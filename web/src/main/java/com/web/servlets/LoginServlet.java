@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
         String name = request.getParameter("username");
         String password = request.getParameter("password");
 
-        User user = null;
+        User user;
         user = userDAO.getByUsername(name);
 
         if (user != null && user.getPassword().equals(password)) {

@@ -11,11 +11,11 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@NamedQueries({@NamedQuery(name = "Post.getAllPosts", query = "select p from Post as p"),
+               @NamedQuery(name = "Post.getPostByName", query = "select p from Post as p where p.name = :name"),
+               @NamedQuery(name = "Post.getByUserTopic", query = "select p from Post as p where p.topic.id = :idTopic and p.user.id = :idUser")})
 @Entity
-@NamedQueries({@NamedQuery(name = "Post.getAllPosts", query = "select p from post as p"),
-               @NamedQuery(name = "Post.getByName", query = "select p from post as p where p.name = :name"),
-               @NamedQuery(name = "Post.getByUserTopic", query = "select p from post as p where p.topic.id = :idTopic and p.user.id = :idUser")})
-@Table(name = "post",uniqueConstraints = @UniqueConstraint(name = "user_topic_post", columnNames = {"ID","user_ID", "topic_ID"}))
+@Table(name = "post")
 public class Post implements Serializable {
 
     private static final long serialVersionUID = 1L;
