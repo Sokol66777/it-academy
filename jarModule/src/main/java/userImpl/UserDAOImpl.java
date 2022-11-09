@@ -57,6 +57,22 @@ public class UserDAOImpl extends AbstractJPADAO implements UserDAO {
     }
 
     @Override
+    public User getUserByIdWithTopic(long id) {
+        User user;
+        try{
+            init();
+            TypedQuery<User> namedQuery = entityManager.createNamedQuery("User.getUserByIDWithTopic", User.class).
+                    setParameter("id",id);
+            user = namedQuery.getSingleResult();
+            close();
+        }catch (NoResultException e){
+            close();
+            return null;
+        }
+        return user;
+    }
+
+    @Override
     public void delete(long id)  {
 
         init();

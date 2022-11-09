@@ -48,6 +48,9 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("ID", user.getID());
                 if(user.getRole().equals("admin")){
                     session.setAttribute("allTopics", topicDAO.getAll());
+                }else{
+                    User userWithTopic = userDAO.getUserByIdWithTopic(user.getID());
+                    session.setAttribute("userWithTopic",userWithTopic);
                 }
                 RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");
                 rd.forward(request, response);

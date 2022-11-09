@@ -34,4 +34,5 @@ public class Post implements Serializable {
     @ManyToOne()
     @JoinColumn(name = "topic_ID")
     private Topic topic;
+
 }

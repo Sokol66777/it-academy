@@ -8,5 +8,5 @@ public interface PostDAO extends DAO<Post>{
 
     public Set<Post> getAll();
 
-    public Post getByName();
+    public Post getByName(String name);
 }

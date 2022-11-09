@@ -2,8 +2,10 @@ package userImpl;
 
 import dao.AbstractJPADAO;
 import dao.TopicDAO;
+import exceptions.TopicLogicException;
 import exceptions.UserLogicException;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import model.Topic;
 
@@ -22,8 +24,13 @@ public class TopicDAOImpl extends AbstractJPADAO implements TopicDAO {
     }
 
     @Override
-    public void add(Topic topic) throws UserLogicException {
+    public void add(Topic topic) throws TopicLogicException {
 
+        Topic topicCheck;
+        topicCheck = getByName(topic.getName());
+        if(topicCheck!=null){
+            throw new TopicLogicException("Topic with this name is create");
+        }
         init();
         entityManager.persist(topic);
         close();
@@ -58,10 +65,17 @@ public class TopicDAOImpl extends AbstractJPADAO implements TopicDAO {
 
     @Override
     public Topic getByName(String name) {
-
-        init();
-        TypedQuery<Topic> namedQuery = entityManager.createNamedQuery("Topic.getTopicByName", Topic.class);
-        Topic topic = namedQuery.getSingleResult();
+        Topic topic;
+        try {
+            init();
+            TypedQuery<Topic> namedQuery = entityManager.createNamedQuery("Topic.getTopicByName", Topic.class).
+                    setParameter("name",name);
+            topic = namedQuery.getSingleResult();
+            close();
+        }catch (NoResultException e){
+            close();
+            return null;
+        }
         return topic;
     }
 }

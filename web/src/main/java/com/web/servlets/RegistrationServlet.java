@@ -1,6 +1,7 @@
 package com.web.servlets;
 
 import exceptions.LogicException;
+import exceptions.TopicLogicException;
 import exceptions.UserLogicException;
 import userImpl.UserDAOImpl;
 import dao.UserDAO;
@@ -61,7 +62,7 @@ public class RegistrationServlet extends HttpServlet {
                RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");
                rd.forward(request,response);
 
-           } catch (UserLogicException e) {
+           } catch (UserLogicException | TopicLogicException e) {
               PrintWriter printWriter=response.getWriter();
               printWriter.write(e.getMessage());
               RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/add.jsp");
