@@ -66,14 +66,9 @@ public class AddTopicServlet extends HttpServlet {
             User user = userDAO.getUserByIdWithTopic(idUser);
             Set<Topic> topicSet = user.getTopics();
             topicSet.add(topic);
-            Set<User> userSet = topic.getUsers();
-            userSet.add(user);
-            user.setTopics(topicSet);
-            topic.setUsers(userSet);
 
             try {
                 userDAO.modify(user);
-                topicDAO.modify(topic);
             } catch (UserLogicException e) {
                 PrintWriter printWriter = response.getWriter();
                 printWriter.write(e.getMessage());

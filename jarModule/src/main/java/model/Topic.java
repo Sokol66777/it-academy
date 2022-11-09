@@ -30,7 +30,7 @@ public class Topic implements Serializable {
     @OneToMany(mappedBy = "topic", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     private Set<Post> posts = new HashSet<>();
 
-    @ManyToMany(mappedBy = "topics", cascade = {CascadeType.PERSIST})
+    @ManyToMany(mappedBy = "topics", fetch = FetchType.EAGER)
     private Set<User> users = new HashSet<>();
 
     @Override
