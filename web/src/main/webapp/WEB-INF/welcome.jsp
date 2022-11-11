@@ -22,7 +22,9 @@
     <c:if test="${role=='user'}">
         <p2>Your topics</p2>
         <c:forEach var="topic" items = "${userWithTopic.topics}">
-            <p><c:out value = "${topic.name}"/></p>
+            <p><c:out value = "${topic.name}"/>
+            <button onclick = "location.href='postsOfTopic?idTopic=${topic.ID}'">Go to</button>
+            <button onclick = "location.href='deleteTopic?deleteTopicID=${topic.ID}'">Delete Topic</button></p>
         </c:forEach>
     </c:if>
     <p></p>

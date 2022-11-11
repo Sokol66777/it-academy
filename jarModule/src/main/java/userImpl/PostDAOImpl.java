@@ -66,4 +66,16 @@ public class PostDAOImpl extends AbstractJPADAO implements PostDAO {
         close();
         return post;
     }
+
+    @Override
+    public List<Post> getPostsByUserTopic(long idUser, long idTopic) {
+
+        init();
+        TypedQuery<Post> namedQuery = entityManager.createNamedQuery("Post.getByUserTopic", Post.class).
+                setParameter("idTopic",idTopic).
+                setParameter("idUser",idUser);
+        List<Post>posts = namedQuery.getResultList();
+        close();
+        return posts;
+    }
 }

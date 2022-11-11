@@ -18,6 +18,7 @@ import userImpl.UserDAOImpl;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Set;
 
 @WebServlet(name = "AddTopicServlet", urlPatterns = "/addTopic")
@@ -31,7 +32,13 @@ public class AddTopicServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String role =(String) session.getAttribute("role");
         if(role.equals("user")){
-            session.setAttribute("allTopics", topicDAO.getAll());
+            long idUser = Long.parseLong(session.getAttribute("ID").toString());
+            List<Topic> allTopics=  topicDAO.getAll();
+            Set<Topic > usersTopic = (userDAO.getUserByIdWithTopic(idUser)).getTopics();
+            for(Topic topic:usersTopic){
+                allTopics.remove(topic);
+            }
+            session.setAttribute("allTopics",allTopics);
         }
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("WEB-INF/addTopic.jsp");
         requestDispatcher.forward(request,response);

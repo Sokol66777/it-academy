@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -14,6 +15,7 @@ import java.io.Serializable;
 @NamedQueries({@NamedQuery(name = "Post.getAllPosts", query = "select p from Post as p"),
                @NamedQuery(name = "Post.getPostByName", query = "select p from Post as p where p.name = :name"),
                @NamedQuery(name = "Post.getByUserTopic", query = "select p from Post as p where p.topic.id = :idTopic and p.user.id = :idUser")})
+
 @Entity
 @Table(name = "post")
 public class Post implements Serializable {
@@ -35,4 +37,16 @@ public class Post implements Serializable {
     @JoinColumn(name = "topic_ID")
     private Topic topic;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Post)) return false;
+        Post post = (Post) o;
+        return getID() == post.getID() && getName().equals(post.getName()) && getText().equals(post.getText());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getID(), getName(), getText());
+    }
 }
