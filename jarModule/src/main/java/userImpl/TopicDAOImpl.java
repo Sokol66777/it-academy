@@ -3,15 +3,11 @@ package userImpl;
 import dao.AbstractJPADAO;
 import dao.TopicDAO;
 import exceptions.TopicLogicException;
-import exceptions.UserLogicException;
-import jakarta.persistence.NamedQuery;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import model.Topic;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class TopicDAOImpl extends AbstractJPADAO implements TopicDAO {
     @Override

@@ -47,13 +47,13 @@ public class PostDAOImpl extends AbstractJPADAO implements PostDAO {
     }
 
     @Override
-    public Set<Post> getAll() {
+    public List<Post> getAll() {
 
         init();
         TypedQuery<Post> namedQuery = entityManager.createNamedQuery("Post.getAllPosts", Post.class);
         List<Post> posts = namedQuery.getResultList();
         close();
-        return new HashSet<>(posts);
+        return posts;
     }
 
     @Override
