@@ -11,7 +11,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 
 public interface DAO<T> {
     void delete(long id) ;
-    void add(T t) throws UserLogicException, TopicLogicException;
-    void modify(T t) throws UserLogicException;
+    void add(T t) throws LogicException;
+    void modify(T t) throws LogicException;
     T get (long id) ;
 }

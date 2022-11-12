@@ -29,7 +29,7 @@
     </c:if>
     <p></p>
     <button onclick = "location.href='logout'"> logout </button>
-    <button onclick = "location.href='update?updateUsername=${username}'">Update</button>
+    <button onclick = "location.href='update?updateUsersID=${ID}'">Update</button>
     <button onclick = "location.href='addTopic'">Add topic</button>
     <c:if test="${role=='admin'}">
        <button onclick = "location.href='allUsers?adminName=${username}'">All users</button>

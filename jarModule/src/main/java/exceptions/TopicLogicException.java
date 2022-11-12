@@ -1,6 +1,6 @@
 package exceptions;
 
-public class TopicLogicException extends Exception{
+public class TopicLogicException extends LogicException{
     public TopicLogicException() {
     }
 

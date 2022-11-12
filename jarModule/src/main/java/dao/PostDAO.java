@@ -12,4 +12,5 @@ public interface PostDAO extends DAO<Post>{
     public Post getByName(String name);
 
     public List<Post> getPostsByUserTopic(long idUser, long idTopic);
+
 }

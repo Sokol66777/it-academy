@@ -2,7 +2,7 @@ package com.web.servlets.topic;
 
 import dao.TopicDAO;
 import dao.UserDAO;
-import exceptions.TopicLogicException;
+import exceptions.LogicException;
 import exceptions.UserLogicException;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -49,16 +49,19 @@ public class AddTopicServlet extends HttpServlet {
         response.setContentType("text/html");
         HttpSession session =request.getSession();
         String role =(String) session.getAttribute("role");
+
         if(role.equals("admin")) {
+
             String topicName = request.getParameter("topicName");
             Topic topic = new Topic();
             topic.setName(topicName);
+
             try {
                 topicDAO.add(topic);
                 session.setAttribute("allTopics", topicDAO.getAll());
                 RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");
                 rd.forward(request, response);
-            } catch (TopicLogicException | UserLogicException e) {
+            } catch (LogicException e) {
                 PrintWriter printWriter = response.getWriter();
                 printWriter.write(e.getMessage());
                 RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/addTopic.jsp");
@@ -76,7 +79,7 @@ public class AddTopicServlet extends HttpServlet {
 
             try {
                 userDAO.modify(user);
-            } catch (UserLogicException e) {
+            } catch (LogicException e) {
                 PrintWriter printWriter = response.getWriter();
                 printWriter.write(e.getMessage());
                 RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");

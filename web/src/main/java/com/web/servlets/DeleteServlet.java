@@ -22,7 +22,7 @@ public class DeleteServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        long deleteUsersID = Long.parseLong(request.getParameter("ID"));
+        long deleteUsersID = Long.parseLong(request.getParameter("deleteUsersID"));
         userDAO.delete(deleteUsersID);
         RequestDispatcher rd = request.getRequestDispatcher("allUsers");
         rd.forward(request,response);

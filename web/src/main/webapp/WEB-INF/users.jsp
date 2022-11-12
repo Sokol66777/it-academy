@@ -8,8 +8,8 @@
     <p>Users page</p>
     <c:forEach var="user" items= "${allUsers}">
         <p><c:out value="${user}"/>
-        <button onclick = "location.href='delete?ID=${user.ID}'">delete</button>
-        <button onclick = "location.href='update?updateUsername=${user.username}'">Update</button>
+        <button onclick = "location.href='delete?deleteUsersID=${user.ID}'">delete</button>
+        <button onclick = "location.href='update?updateUsersID=${user.ID}'">Update</button>
 
         </p>
     </c:forEach>

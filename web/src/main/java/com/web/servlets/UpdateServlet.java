@@ -1,5 +1,6 @@
 package com.web.servlets;
 
+import exceptions.LogicException;
 import exceptions.UserLogicException;
 import userImpl.UserDAOImpl;
 import dao.UserDAO;
@@ -25,13 +26,13 @@ public class UpdateServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String updateUsersUsername = request.getParameter("updateUsername");
-        User updateUser = userDAO.getByUsername(updateUsersUsername);
+        long updateUserID = Long.parseLong(request.getParameter("updateUsersID"));
+        User updateUser = userDAO.get(updateUserID);
 
         if (updateUser!=null) {
             HttpSession session = request.getSession();
-            session.setAttribute("updateUser", updateUser);
-            session.setAttribute("updateUsersUsername", updateUsersUsername);
+            session.setAttribute("updateUserID",updateUserID);
+            session.setAttribute("updateUsersUsername", updateUser.getUsername());
             session.setAttribute("updateUsersPassword", updateUser.getPassword());
             session.setAttribute("updateUsersEmail", updateUser.getEmail());
         }
@@ -45,6 +46,7 @@ public class UpdateServlet extends HttpServlet {
         User updateUser;
         response.setContentType("text/html");
         HttpSession session = request.getSession();
+        long updateUserID = Long.parseLong(session.getAttribute("updateUserID").toString());
         String password="";
         String updateUsersUsername = (String)session.getAttribute("updateUsersUsername");
         String newUsername = request.getParameter("newUsername");
@@ -57,17 +59,11 @@ public class UpdateServlet extends HttpServlet {
                 ValidationUsersParametrs.validationPassword(password);
             }
 
-            User user = userDAO.getByUsername(updateUsersUsername);
-            updateUser = new User();
+            updateUser = userDAO.getUserByIdWithTopic(updateUserID);
             updateUser.setUsername(newUsername);
             updateUser.setEmail(newEmail);
-            if(user!=null) {
-                updateUser.setID(user.getID());
-                updateUser.setRole(user.getRole());
-            }
 
             if (password.equals("")){
-                updateUser.setPassword(user.getPassword());
                 userDAO.modify(updateUser);
             }
             else{
@@ -81,14 +77,13 @@ public class UpdateServlet extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");
             rd.forward(request,response);
 
-        } catch (UserLogicException e) {
+        } catch (LogicException e) {
 
             PrintWriter printWriter = response.getWriter();
             printWriter.write(e.getMessage());
             RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/update.jsp");
             rd.include(request,response);
             printWriter.close();
-            rd.forward(request,response);
         }
     }
 }

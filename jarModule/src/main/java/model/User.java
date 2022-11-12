@@ -40,7 +40,7 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user")
     private Set <Post> posts=new HashSet<>();
 
-    @ManyToMany()
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "User_Topic",
             joinColumns = {@JoinColumn(name = "user_ID")},

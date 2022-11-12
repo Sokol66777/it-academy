@@ -28,7 +28,7 @@ public class Topic implements Serializable {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "topic", cascade = {CascadeType.PERSIST})
+    @OneToMany(mappedBy = "topic", cascade = {CascadeType.ALL})
     private Set<Post> posts = new HashSet<>();
 
     @ManyToMany(mappedBy = "topics",cascade = {CascadeType.PERSIST})

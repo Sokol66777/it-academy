@@ -1,7 +1,9 @@
 package com.web.servlets.topic;
 
+import dao.PostDAO;
 import dao.TopicDAO;
 import dao.UserDAO;
+import exceptions.LogicException;
 import exceptions.UserLogicException;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -10,14 +12,17 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.Post;
 import model.Topic;
 import model.User;
+import userImpl.PostDAOImpl;
 import userImpl.TopicDAOImpl;
 import userImpl.UserDAOImpl;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 @WebServlet(name = "DeleteTopic", urlPatterns = "/deleteTopic")
@@ -25,21 +30,32 @@ public class DeleteTopic extends HttpServlet {
 
     TopicDAO topicDAO = new TopicDAOImpl();
     UserDAO userDAO = new UserDAOImpl();
+    PostDAO postDAO = new PostDAOImpl();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         long idTopic = Long.parseLong(request.getParameter("deleteTopicID"));
-        User userWithTopic = (User) session.getAttribute("userWithTopic");
+        User userWithTopic =userDAO.getUserByIdWithTopic( Long.parseLong(session.getAttribute("ID").toString()));
         Set<Topic> topics = userWithTopic.getTopics();
+        List<Post> deletePosts = postDAO.getPostsByUserTopic(userWithTopic.getID(), idTopic);
+
+        for (Post deletePost:deletePosts){
+            postDAO.delete(deletePost.getID());
+        }
+
         Topic deleteTopic = topicDAO.get(idTopic);
         topics.remove(deleteTopic);
+
         try {
+
             userDAO.modify(userWithTopic);
             session.setAttribute("userWithTopic",userWithTopic);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("WEB-INF/welcome.jsp");
             requestDispatcher.forward(request,response);
-        } catch (UserLogicException e) {
+
+        } catch (LogicException e) {
+
             PrintWriter printWriter = response.getWriter();
             printWriter.write(e.getMessage());
             RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");

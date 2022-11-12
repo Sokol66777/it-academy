@@ -62,7 +62,7 @@ public class RegistrationServlet extends HttpServlet {
                RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");
                rd.forward(request,response);
 
-           } catch (UserLogicException | TopicLogicException e) {
+           } catch (LogicException e) {
               PrintWriter printWriter=response.getWriter();
               printWriter.write(e.getMessage());
               RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/add.jsp");

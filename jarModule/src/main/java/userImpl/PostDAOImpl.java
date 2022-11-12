@@ -78,4 +78,6 @@ public class PostDAOImpl extends AbstractJPADAO implements PostDAO {
         close();
         return posts;
     }
+
+
 }

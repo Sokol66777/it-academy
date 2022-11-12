@@ -37,7 +37,7 @@ public class TopicDAOImpl extends AbstractJPADAO implements TopicDAO {
     }
 
     @Override
-    public void modify(Topic topic) throws UserLogicException {
+    public void modify(Topic topic) {
 
         init();
         entityManager.merge(topic);
