@@ -1,7 +1,6 @@
 package com.web.servlets;
 
 import exceptions.LogicException;
-import exceptions.UserLogicException;
 import userImpl.UserDAOImpl;
 import dao.UserDAO;
 import jakarta.servlet.RequestDispatcher;
@@ -14,10 +13,8 @@ import jakarta.servlet.http.HttpSession;
 import model.User;
 import validation.ValidationUsersParametrs;
 
-import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 
 @WebServlet(name = "UpdateServlet", urlPatterns = {"/update"})
 public class UpdateServlet extends HttpServlet {

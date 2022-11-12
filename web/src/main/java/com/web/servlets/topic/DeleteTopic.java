@@ -4,7 +4,6 @@ import dao.PostDAO;
 import dao.TopicDAO;
 import dao.UserDAO;
 import exceptions.LogicException;
-import exceptions.UserLogicException;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,7 +20,6 @@ import userImpl.UserDAOImpl;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 

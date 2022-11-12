@@ -13,7 +13,7 @@
     			</tr>
                 <tr>
                     <td>Text</td>
-                    <td><textarea name = "topicText" rows = "7" cols ="100"></textarea></td>
+                    <td><textarea name = "topicText" rows = "7" cols ="100" required="required"></textarea></td>
                 </tr>
                 <input type = "hidden" name = "idTopic" value = "<c:out value = '${idTopic}'/>"/>
             	<tr>

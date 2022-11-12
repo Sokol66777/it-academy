@@ -1,7 +1,6 @@
 package com.web.servlets.post;
 
 import dao.PostDAO;
-import dao.TopicDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Post;
 import userImpl.PostDAOImpl;
-import userImpl.TopicDAOImpl;
 
 import java.io.IOException;
 import java.util.List;

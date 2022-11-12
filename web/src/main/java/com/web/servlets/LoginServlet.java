@@ -1,6 +1,5 @@
 package com.web.servlets;
 import dao.TopicDAO;
-import model.Topic;
 import userImpl.TopicDAOImpl;
 import userImpl.UserDAOImpl;
 import dao.UserDAO;
@@ -11,11 +10,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.Set;
 
 import jakarta.servlet.http.HttpSession;
 import model.User;

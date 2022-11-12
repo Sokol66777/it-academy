@@ -3,7 +3,6 @@ package com.web.servlets.topic;
 import dao.TopicDAO;
 import dao.UserDAO;
 import exceptions.LogicException;
-import exceptions.UserLogicException;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
