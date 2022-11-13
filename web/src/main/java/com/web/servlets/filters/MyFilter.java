@@ -8,7 +8,8 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebFilter(servletNames = {"WelcomeServlet","UsersServlet","UpdateServlet","DeleteServlet"})
+@WebFilter(servletNames = {"WelcomeServlet","UsersServlet","UpdateServlet","DeleteServlet,AddPost,DeletePost,PostsOfTpoic," +
+        "UpdatePost,AddTopicServlet,DeleteTopic"})
 public class MyFilter implements Filter {
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
