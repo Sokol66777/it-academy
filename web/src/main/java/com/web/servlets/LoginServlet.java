@@ -1,4 +1,6 @@
 package com.web.servlets;
+import dao.TopicDAO;
+import userImpl.TopicDAOImpl;
 import userImpl.UserDAOImpl;
 import dao.UserDAO;
 import jakarta.servlet.RequestDispatcher;
@@ -8,10 +10,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 
 import jakarta.servlet.http.HttpSession;
 import model.User;
@@ -21,6 +21,7 @@ import model.User;
 public class LoginServlet extends HttpServlet {
 
     public final UserDAO userDAO = new UserDAOImpl();
+    public final TopicDAO topicDAO = new TopicDAOImpl();
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
@@ -33,21 +34,20 @@ public class LoginServlet extends HttpServlet {
         String name = request.getParameter("username");
         String password = request.getParameter("password");
 
-        User user = null;
-
-        try {
-            user = userDAO.getByUsername(name);
-        } catch (SQLException | PropertyVetoException e) {
-            request.setAttribute("error",e.getMessage());
-            RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
-            rd.forward(request,response);
-        }
-
+        User user;
+        user = userDAO.getByUsername(name);
 
         if (user != null && user.getPassword().equals(password)) {
                 HttpSession session = request.getSession();
                 session.setAttribute("username", user.getUsername());
                 session.setAttribute("role", user.getRole());
+                session.setAttribute("ID", user.getID());
+                if(user.getRole().equals("admin")){
+                    session.setAttribute("allTopics", topicDAO.getAll());
+                }else{
+                    User userWithTopic = userDAO.getUserByIdWithTopic(user.getID());
+                    session.setAttribute("userWithTopic",userWithTopic);
+                }
                 RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");
                 rd.forward(request, response);
             } else {

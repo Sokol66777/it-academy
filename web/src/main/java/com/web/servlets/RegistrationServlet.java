@@ -1,6 +1,6 @@
 package com.web.servlets;
 
-import exceptions.RepeatedDataException;
+import exceptions.LogicException;
 import userImpl.UserDAOImpl;
 import dao.UserDAO;
 import jakarta.servlet.RequestDispatcher;
@@ -11,12 +11,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.User;
-import validation.ValidationParametrs;
+import validation.ValidationUsersParametrs;
 
-import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 
 @WebServlet(name = "RegistrationServlet", urlPatterns = {"/add"})
 public class RegistrationServlet extends HttpServlet {
@@ -31,12 +29,14 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-       response.setContentType("text/html");
-       String username = request.getParameter("username");
-       String password = request.getParameter("password");
-       String confirmedPassword = request.getParameter("confirmedPassword");
-       String role = "user";
-       String email = request.getParameter("email");
+        response.setContentType("text/html");
+        HttpSession session = request.getSession();
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String confirmedPassword = request.getParameter("confirmedPassword");
+        String role = "user";
+        String email = request.getParameter("email");
+        long newUserId;
 
 
        if(!password.equals(confirmedPassword)){
@@ -47,7 +47,7 @@ public class RegistrationServlet extends HttpServlet {
            printWriter.close();
        }else{
            try {
-               ValidationParametrs.validationPassword(password);
+               ValidationUsersParametrs.validationPassword(password);
 
                User newUser = new User();
                newUser.setEmail(email);
@@ -55,23 +55,23 @@ public class RegistrationServlet extends HttpServlet {
                newUser.setUsername(username);
 
                userDAO.add(newUser);
+               newUserId = userDAO.getByUsername(username).getID();
+               User userWithTopic = userDAO.getUserByIdWithTopic(newUserId);
 
-               HttpSession session = request.getSession();
+               session.setAttribute("userWithTopic",userWithTopic);
                session.setAttribute("username", username);
                session.setAttribute("role",role);
+               session.setAttribute("ID",newUserId);
+
                RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");
                rd.forward(request,response);
 
-           } catch (RepeatedDataException | SQLException e) {
+           } catch (LogicException e) {
               PrintWriter printWriter=response.getWriter();
               printWriter.write(e.getMessage());
               RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/add.jsp");
               rd.include(request,response);
               printWriter.close();
-           } catch (PropertyVetoException e){
-               request.setAttribute("error",e.getMessage());
-               RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
-               rd.forward(request,response);
            }
 
        }

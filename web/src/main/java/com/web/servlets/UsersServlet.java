@@ -10,9 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import java.beans.PropertyVetoException;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,13 +26,7 @@ public class UsersServlet extends HttpServlet {
         String adminName = (String) session.getAttribute("username");
         List<User> trueUsers = new ArrayList<User>();
         List<User> users = null;
-        try {
-            users = userDAO.getAllUsers();
-        } catch (SQLException | PropertyVetoException e) {
-            request.setAttribute("error",e.getMessage());
-            RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
-            rd.forward(request,response);
-        }
+        users = userDAO.getAllUsers();
 
         if(users!=null) {
             for (User user : users) {

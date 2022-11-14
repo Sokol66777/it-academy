@@ -1,11 +1,11 @@
 package dao;
 
-import java.beans.PropertyVetoException;
-import java.sql.SQLException;
+import exceptions.LogicException;
+
 
 public interface DAO<T> {
-    void delete(String name) throws SQLException, PropertyVetoException;
-    void add(T t) throws SQLException, PropertyVetoException;
-    void modify(T t) throws SQLException, PropertyVetoException;
-    T get (long id) throws SQLException, PropertyVetoException;
+    void delete(long id) ;
+    void add(T t) throws LogicException;
+    void modify(T t) throws LogicException;
+    T get (long id) ;
 }

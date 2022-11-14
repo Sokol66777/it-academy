@@ -1,18 +1,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@ page language = "java" contentType= "text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
-
 <html>
 <head>
-
 </head>
 <body>
     <p>Users page</p>
     <c:forEach var="user" items= "${allUsers}">
         <p><c:out value="${user}"/>
-        <button onclick = "location.href='delete?username=${user.username}'">delete</button>
-        <button onclick = "location.href='update?updateUsername=${user.username}'">Update</button>
+        <button onclick = "location.href='delete?deleteUsersID=${user.ID}'">delete</button>
+        <button onclick = "location.href='update?updateUsersID=${user.ID}'">Update</button>
 
         </p>
     </c:forEach>

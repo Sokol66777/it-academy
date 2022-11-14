@@ -1,71 +1,59 @@
 package model;
 
-import java.util.Objects;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public class User {
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@NamedQueries({@NamedQuery(name = "User.getUserByUsername",query = "select u from User AS u where u.username = :username"),
+               @NamedQuery(name = "User.getUserByEmail", query = "select u from User as u where u.email = :email"),
+               @NamedQuery(name = "User.getAllUsers", query = "select u from User as u"),
+               @NamedQuery(name = "User.getUserByIDWithTopic", query = "select u from User u left join fetch u.topics where u.ID = :id")})
+@Entity
+@Table(name="user")
+
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Column(name = "name",unique = true,nullable = false)
     private String username;
+    @Column(name="email",unique = true,nullable = false)
     private String email;
+    @Column(name="password",nullable = false)
     private String password;
+    @Column(name="role",nullable = false)
     private String role;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
 
-    public User(){
-    }
 
-    public User(long ID, String username,String password, String email,  String role ) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.ID = ID;
-    }
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
+    private Set <Post> posts=new HashSet<>();
 
-    public String getUsername() {
-        return username;
-    }
+    @ManyToMany()
+    @JoinTable(
+            name = "User_Topic",
+            joinColumns = {@JoinColumn(name = "user_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "topic_ID")}
+    )
+    private Set<Topic> topics=new HashSet<>();
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public long getID() {
-        return ID;
-    }
-
-    public void setID(long ID) {
-        this.ID = ID;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return getID() == user.getID() && Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getRole(), user.getRole());
+        return getID() == user.getID() && getUsername().equals(user.getUsername()) && getEmail().equals(user.getEmail()) && getPassword().equals(user.getPassword()) && getRole().equals(user.getRole());
     }
 
     @Override

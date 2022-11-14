@@ -1,6 +1,6 @@
 package com.web.servlets;
 
-import exceptions.RepeatedDataException;
+import exceptions.LogicException;
 import userImpl.UserDAOImpl;
 import dao.UserDAO;
 import jakarta.servlet.RequestDispatcher;
@@ -11,12 +11,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.User;
-import validation.ValidationParametrs;
+import validation.ValidationUsersParametrs;
 
-import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 
 @WebServlet(name = "UpdateServlet", urlPatterns = {"/update"})
 public class UpdateServlet extends HttpServlet {
@@ -25,19 +23,13 @@ public class UpdateServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String updateUsersUsername = request.getParameter("updateUsername");
-        User updateUser = null;
-        try {
-            updateUser = userDAO.getByUsername(updateUsersUsername);
-        } catch (SQLException | PropertyVetoException e) {
-            request.setAttribute("error",e.getMessage());
-            RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
-            rd.forward(request,response);
-        }
+        long updateUserID = Long.parseLong(request.getParameter("updateUsersID"));
+        User updateUser = userDAO.get(updateUserID);
+
         if (updateUser!=null) {
             HttpSession session = request.getSession();
-            session.setAttribute("updateUser", updateUser);
-            session.setAttribute("updateUsersUsername", updateUsersUsername);
+            session.setAttribute("updateUserID",updateUserID);
+            session.setAttribute("updateUsersUsername", updateUser.getUsername());
             session.setAttribute("updateUsersPassword", updateUser.getPassword());
             session.setAttribute("updateUsersEmail", updateUser.getEmail());
         }
@@ -51,6 +43,7 @@ public class UpdateServlet extends HttpServlet {
         User updateUser;
         response.setContentType("text/html");
         HttpSession session = request.getSession();
+        long updateUserID = Long.parseLong(session.getAttribute("updateUserID").toString());
         String password="";
         String updateUsersUsername = (String)session.getAttribute("updateUsersUsername");
         String newUsername = request.getParameter("newUsername");
@@ -60,16 +53,12 @@ public class UpdateServlet extends HttpServlet {
         }
         try {
             if(!password.equals("")) {
-                ValidationParametrs.validationPassword(password);
+                ValidationUsersParametrs.validationPassword(password);
             }
 
-            User user = userDAO.getByUsername(updateUsersUsername);
-            updateUser = new User();
+            updateUser = userDAO.getUserByIdWithTopic(updateUserID);
             updateUser.setUsername(newUsername);
             updateUser.setEmail(newEmail);
-            if(user!=null) {
-                updateUser.setID(user.getID());
-            }
 
             if (password.equals("")){
                 userDAO.modify(updateUser);
@@ -85,20 +74,13 @@ public class UpdateServlet extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/welcome.jsp");
             rd.forward(request,response);
 
-        } catch (RepeatedDataException | SQLException e) {
+        } catch (LogicException e) {
 
             PrintWriter printWriter = response.getWriter();
             printWriter.write(e.getMessage());
             RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/update.jsp");
             rd.include(request,response);
             printWriter.close();
-            rd.forward(request,response);
-        } catch (PropertyVetoException e){
-            request.setAttribute("error",e.getMessage());
-            RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
-            rd.forward(request,response);
         }
-
-
     }
 }

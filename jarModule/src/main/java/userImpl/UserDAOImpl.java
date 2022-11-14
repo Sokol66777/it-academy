@@ -1,151 +1,140 @@
 package userImpl;
 
-import connectors.DataSourceConnectors;
+import dao.AbstractJPADAO;
 import dao.UserDAO;
-import model.Constants;
+import exceptions.UserLogicException;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
 import model.User;
 
-import java.beans.PropertyVetoException;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAOImpl implements UserDAO {
+public class UserDAOImpl extends AbstractJPADAO implements UserDAO {
 
 
     @Override
-    public List<User> getAllUsers() throws SQLException, PropertyVetoException {
-        List<User> users = new ArrayList<>();
-        User user=null;
-        try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(Constants.SQL_GET_ALL_USERS);
-            while (resultSet.next()){
-                user = resultSetToUser(resultSet);
-                users.add(user);
-            }
-        }
+    public List<User> getAllUsers() {
 
-
+        init();
+        TypedQuery<User> namedQuery = entityManager.createNamedQuery("User.getAllUsers", User.class);
+        List<User> users = namedQuery.getResultList();
+        close();
         return users;
     }
 
-
     @Override
-    public User getByUsername(String username) throws SQLException, PropertyVetoException {
+    public User getByUsername(String username){
 
-        User user=null;
-
-        try (Connection connection = DataSourceConnectors.getInstance().getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_GET_BY_NAME);
-            preparedStatement.setString(1,username);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                user = resultSetToUser(resultSet);
-            }
-
+        User user;
+        try {
+            init();
+            TypedQuery<User> namedQuery = entityManager.createNamedQuery("User.getUserByUsername", User.class).
+                    setParameter("username", username);
+            user = namedQuery.getSingleResult();
+            close();
+        }catch (NoResultException e){
+            close();
+            return null;
         }
-
         return user;
     }
 
-
-
     @Override
-    public User getByEmail(String email) throws PropertyVetoException, SQLException {
-       User user = null;
-       try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
-           PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_GET_BY_EMAIL);
-           preparedStatement.setString(1,email);
-           ResultSet resultSet = preparedStatement.executeQuery();
-           while (resultSet.next()){
-               user = resultSetToUser(resultSet);
-           }
-       }
+    public User getByEmail(String email) {
+        User user;
+        try {
+            init();
+            TypedQuery<User> namedQuery = entityManager.createNamedQuery("User.getUserByEmail", User.class).
+                    setParameter("email", email);
+            user = namedQuery.getSingleResult();
+            close();
+        }catch(NoResultException e){
+            close();
+            return null;
+        }
         return user;
     }
 
+    @Override
+    public User getUserByIdWithTopic(long id) {
+        User user;
+        try{
+            init();
+            TypedQuery<User> namedQuery = entityManager.createNamedQuery("User.getUserByIDWithTopic", User.class).
+                    setParameter("id",id);
+            user = namedQuery.getSingleResult();
+            close();
+        }catch (NoResultException e){
+            close();
+            return null;
+        }
+        return user;
+    }
 
     @Override
-    public void delete(String username) throws SQLException, PropertyVetoException {
+    public void delete(long id)  {
 
-        try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_DELETE_FROM_USER);
-            preparedStatement.setString(1,username);
-            preparedStatement.executeUpdate();
-        }
+        init();
+        User deleteUser = entityManager.find(User.class,id);
+        entityManager.remove(deleteUser);
+        close();
 
     }
 
 
     @Override
-    public void add(User user) throws SQLException, PropertyVetoException {
+    public void add(User user) throws UserLogicException {
+        User userCheck;
+        user.setRole("user");
 
-        try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_ADD_INTO_USER);
-            preparedStatement.setString(1, user.getUsername());
-            preparedStatement.setString(2,user.getPassword());
-            preparedStatement.setString(3,user.getEmail());
-            preparedStatement.executeUpdate();
+        userCheck = getByEmail(user.getEmail());
+        if (userCheck != null) {
+            throw new UserLogicException("this email used");
         }
+
+        userCheck = getByUsername(user.getUsername());
+        if (userCheck != null) {
+            throw new UserLogicException("this username used");
+        }
+        init();
+        entityManager.persist(user);
+        close();
+
 
     }
 
     @Override
-    public void modify(User user) throws SQLException, PropertyVetoException {
+    public void modify(User user) throws UserLogicException {
+        User userCheck;
+        User userOld = get(user.getID());
 
-        try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
-            PreparedStatement preparedStatement;
-            if(user.getPassword()!=null) {
-                preparedStatement = connection.prepareStatement(Constants.SQL_UPDATE_USER_WHITH_PASSWORD);
-                preparedStatement.setString(1, user.getUsername());
-                preparedStatement.setString(2, user.getPassword());
-                preparedStatement.setString(3, user.getEmail());
-                preparedStatement.setLong(4, user.getID());
-            }else{
+        if(!userOld.getUsername().equals(user.getUsername())){
 
-                preparedStatement = connection.prepareStatement(Constants.SQL_UPDATE_USER_WHITHOUT_PASSWORD);
-                preparedStatement.setString(1, user.getUsername());
-                preparedStatement.setString(2, user.getEmail());
-                preparedStatement.setLong(3,user.getID());
-
-
-            }
-            preparedStatement.executeUpdate();
-
-        }
-    }
-
-    @Override
-    public User get(long ID) throws SQLException, PropertyVetoException {
-
-        User user = null;
-        try(Connection connection = DataSourceConnectors.getInstance().getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(Constants.SQL_GET_BY_ID);
-            preparedStatement.setLong(1,ID);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                user = resultSetToUser(resultSet);
+            userCheck = getByUsername(user.getUsername());
+            if (userCheck != null) {
+                throw new UserLogicException("this username used");
             }
         }
 
-        return user;
+        if(!userOld.getEmail().equals(user.getEmail())){
+
+            userCheck = getByEmail(user.getEmail());
+            if (userCheck != null) {
+                throw new UserLogicException("this email used");
+            }
+        }
+        init();
+        entityManager.merge(user);
+        close();
     }
-    private User resultSetToUser(ResultSet resultSet) throws SQLException {
-        User user = new User();
 
-        long id = resultSet.getLong("ID");
-        String name = resultSet.getString("name");
-        String password = resultSet.getString("password");
-        String usersEmail = resultSet.getString("email");
-        String role = resultSet.getString("role");
+    @Override
+    public User get(long ID)  {
 
-        user.setEmail(usersEmail);
-        user.setUsername(name);
-        user.setPassword(password);
-        user.setID(id);
-        user.setRole(role);
-
+        init();
+        User user = entityManager.find(User.class,ID);
+        close();
         return user;
+
     }
 }
