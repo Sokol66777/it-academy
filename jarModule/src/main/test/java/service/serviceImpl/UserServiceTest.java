@@ -122,7 +122,7 @@ public class UserServiceTest {
     @Ignore
     public void deleteNegativeTest(){
         assertThrows(InvalidDataAccessApiUsageException.class,()->{
-            userService.delete(8754585);
+            userService.delete(875585);
         });
     }
 }
