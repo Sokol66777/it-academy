@@ -1,7 +1,7 @@
 package com.web.servlets;
 import dao.TopicDAO;
-import userImpl.TopicDAOImpl;
-import userImpl.UserDAOImpl;
+import dao.daoImpl.TopicDAOImpl;
+import dao.daoImpl.UserDAOImpl;
 import dao.UserDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;

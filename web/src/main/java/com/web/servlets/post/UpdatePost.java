@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Post;
-import userImpl.PostDAOImpl;
+import dao.daoImpl.PostDAOImpl;
 
 import java.io.IOException;
 import java.io.PrintWriter;
