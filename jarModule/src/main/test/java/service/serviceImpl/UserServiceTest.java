@@ -1,5 +1,6 @@
 package service.serviceImpl;
 
+import config.SpringConfig;
 import exceptions.LogicException;
 import model.User;
 import org.junit.Ignore;
@@ -14,7 +15,7 @@ import services.UserService;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring-hibernate.xml")
+@ContextConfiguration(classes = SpringConfig.class)
 public class UserServiceTest {
 
     private final String NEGATIVE_USERNAME = "user1";
@@ -77,7 +78,6 @@ public class UserServiceTest {
     }
 
     @Test
-    @Ignore
     public void getByUsernameTest(){
         assertEquals(userService.getByUsername("user1").getUsername(),"user1");
     }
@@ -125,4 +125,6 @@ public class UserServiceTest {
             userService.delete(875585);
         });
     }
+
+
 }
