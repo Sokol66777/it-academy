@@ -28,6 +28,7 @@ public class UserServiceTest {
     private UserService userService;
 
     @Test
+    @Ignore
     public void getTest(){
         assertEquals(userService.get(1).getUsername(),"user1");
     }
@@ -78,6 +79,7 @@ public class UserServiceTest {
     }
 
     @Test
+    @Ignore
     public void getByUsernameTest(){
         assertEquals(userService.getByUsername("user1").getUsername(),"user1");
     }
