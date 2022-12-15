@@ -2,7 +2,7 @@
 <%@ page language = "java" contentType= "text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html>
 <head>
-    <button onclick = "location.href='/start'">Welcome </button>
+    <button onclick = "location.href='${pageContext.request.contextPath}/start'">Welcome </button>
 </head>
 <body>
 

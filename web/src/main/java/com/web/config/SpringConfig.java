@@ -13,9 +13,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import java.util.Properties;
 
 @Configuration
-@ComponentScan("com.pvt.dao")
-@ComponentScan("com.pvt.services")
-@ComponentScan("com.web.fasad")
+@ComponentScan(basePackages = {"com.pvt.dao","com.pvt.services","com.web.fasad"})
+
 @EnableTransactionManagement
 public class SpringConfig {
 
@@ -33,7 +32,7 @@ public class SpringConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
         LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         localContainerEntityManagerFactoryBean.setDataSource(driverManagerDataSource());
-        localContainerEntityManagerFactoryBean.setPackagesToScan("com/pvt/model");
+        localContainerEntityManagerFactoryBean.setPackagesToScan("com.pvt.model");
         localContainerEntityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto","update");
