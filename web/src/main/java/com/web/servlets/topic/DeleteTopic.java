@@ -14,9 +14,9 @@ import jakarta.servlet.http.HttpSession;
 import model.Post;
 import model.Topic;
 import model.User;
-import userImpl.PostDAOImpl;
-import userImpl.TopicDAOImpl;
-import userImpl.UserDAOImpl;
+import dao.daoImpl.PostDAOImpl;
+import dao.daoImpl.TopicDAOImpl;
+import dao.daoImpl.UserDAOImpl;
 
 import java.io.IOException;
 import java.io.PrintWriter;

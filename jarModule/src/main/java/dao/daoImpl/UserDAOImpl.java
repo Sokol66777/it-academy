@@ -1,24 +1,28 @@
-package userImpl;
+package dao.daoImpl;
 
-import dao.AbstractJPADAO;
+import dao.BaseDAO;
 import dao.UserDAO;
 import exceptions.UserLogicException;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import model.User;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+@Repository
+public class UserDAOImpl extends BaseDAO<User> implements UserDAO {
 
-public class UserDAOImpl extends AbstractJPADAO implements UserDAO {
-
+    public UserDAOImpl(){
+        super();
+        clazz = User.class;
+    }
 
     @Override
     public List<User> getAllUsers() {
 
-        init();
-        TypedQuery<User> namedQuery = entityManager.createNamedQuery("User.getAllUsers", User.class);
+        TypedQuery<User> namedQuery = entityManager.createNamedQuery("User.getAllUsers", clazz);
         List<User> users = namedQuery.getResultList();
-        close();
         return users;
     }
 
@@ -27,13 +31,10 @@ public class UserDAOImpl extends AbstractJPADAO implements UserDAO {
 
         User user;
         try {
-            init();
-            TypedQuery<User> namedQuery = entityManager.createNamedQuery("User.getUserByUsername", User.class).
+            TypedQuery<User> namedQuery = entityManager.createNamedQuery("User.getUserByUsername", clazz).
                     setParameter("username", username);
             user = namedQuery.getSingleResult();
-            close();
         }catch (NoResultException e){
-            close();
             return null;
         }
         return user;
@@ -41,15 +42,13 @@ public class UserDAOImpl extends AbstractJPADAO implements UserDAO {
 
     @Override
     public User getByEmail(String email) {
+
         User user;
         try {
-            init();
-            TypedQuery<User> namedQuery = entityManager.createNamedQuery("User.getUserByEmail", User.class).
+            TypedQuery<User> namedQuery = entityManager.createNamedQuery("User.getUserByEmail", clazz).
                     setParameter("email", email);
             user = namedQuery.getSingleResult();
-            close();
         }catch(NoResultException e){
-            close();
             return null;
         }
         return user;
@@ -57,31 +56,16 @@ public class UserDAOImpl extends AbstractJPADAO implements UserDAO {
 
     @Override
     public User getUserByIdWithTopic(long id) {
+
         User user;
-        try{
-            init();
-            TypedQuery<User> namedQuery = entityManager.createNamedQuery("User.getUserByIDWithTopic", User.class).
-                    setParameter("id",id);
-            user = namedQuery.getSingleResult();
-            close();
-        }catch (NoResultException e){
-            close();
-            return null;
-        }
+        TypedQuery<User> namedQuery = entityManager.createNamedQuery("User.getUserByIDWithTopic",clazz).
+                setParameter("id",id);
+        user = namedQuery.getSingleResult();
+
         return user;
     }
 
-    @Override
-    public void delete(long id)  {
-
-        init();
-        User deleteUser = entityManager.find(User.class,id);
-        entityManager.remove(deleteUser);
-        close();
-
-    }
-
-
+    @Transactional
     @Override
     public void add(User user) throws UserLogicException {
         User userCheck;
@@ -96,17 +80,15 @@ public class UserDAOImpl extends AbstractJPADAO implements UserDAO {
         if (userCheck != null) {
             throw new UserLogicException("this username used");
         }
-        init();
         entityManager.persist(user);
-        close();
-
 
     }
-
+    @Transactional
     @Override
     public void modify(User user) throws UserLogicException {
+
         User userCheck;
-        User userOld = get(user.getID());
+        User userOld = super.get(user.getID());
 
         if(!userOld.getUsername().equals(user.getUsername())){
 
@@ -123,18 +105,7 @@ public class UserDAOImpl extends AbstractJPADAO implements UserDAO {
                 throw new UserLogicException("this email used");
             }
         }
-        init();
         entityManager.merge(user);
-        close();
     }
 
-    @Override
-    public User get(long ID)  {
-
-        init();
-        User user = entityManager.find(User.class,ID);
-        close();
-        return user;
-
-    }
 }

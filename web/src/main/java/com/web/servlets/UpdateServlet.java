@@ -1,7 +1,7 @@
 package com.web.servlets;
 
 import exceptions.LogicException;
-import userImpl.UserDAOImpl;
+import dao.daoImpl.UserDAOImpl;
 import dao.UserDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
