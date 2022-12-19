@@ -55,7 +55,15 @@ public class UserForm {
         }catch (LazyInitializationException e){
             this.topics = new HashSet<>();
         }
+    }
 
-
+    @Override
+    public String toString() {
+        return
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", role='" + role + '\'' ;
     }
 }

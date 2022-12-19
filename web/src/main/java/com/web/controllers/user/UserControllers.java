@@ -46,6 +46,7 @@ public class UserControllers {
             }
         }
         ModelAndView modelAndView = new ModelAndView("users");
+        modelAndView.addObject("allUsers",trueUsers);
         return modelAndView;
     }
 }
