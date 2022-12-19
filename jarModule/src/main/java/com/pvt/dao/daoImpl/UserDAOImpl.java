@@ -68,18 +68,7 @@ public class UserDAOImpl extends BaseDAO<User> implements UserDAO {
     @Transactional
     @Override
     public void add(User user) throws UserLogicException {
-        User userCheck;
-        user.setRole("user");
 
-        userCheck = getByEmail(user.getEmail());
-        if (userCheck != null) {
-            throw new UserLogicException("this email used");
-        }
-
-        userCheck = getByUsername(user.getUsername());
-        if (userCheck != null) {
-            throw new UserLogicException("this username used");
-        }
         entityManager.persist(user);
 
     }

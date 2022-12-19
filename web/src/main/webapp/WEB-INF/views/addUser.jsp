@@ -2,11 +2,11 @@
 <%@ page language = "java" contentType= "text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html>
 <head>
-    <h2>Login page</h2>
+    <h2>Registration page</h2>
 </head>
 <body>
     <p><c:out value="${errorMassage}"/></p>
-    <form action="login" method="post">
+    <form action="add" method="post">
     	<table>
 			<tr>
     			<td>User Name</td>
@@ -16,11 +16,19 @@
     			<td>Password</td>
         		<td><input type = "password" name="password" required="required"/></td>
 			</tr>
+			<tr>
+                <td>Confirm password</td>
+                <td><input type = "password" name="confirmedPassword" required="required"/></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type = "email" name="email" required="required"/></td>
+            </tr>
         	<tr>
-        		<td><input type = "submit" value="login"/></td>
+        		<td><input type = "submit" value="add"/></td>
 			</tr>
 		</table>
 	</form>
-	<button onclick = "location.href='${pageContext.request.contextPath}/'">Start Page </button>
+		<button onclick = "location.href='${pageContext.request.contextPath}/'">Start Page </button>
 </body>
 </html>
