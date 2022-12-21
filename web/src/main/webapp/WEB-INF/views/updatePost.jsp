@@ -5,6 +5,7 @@
     <h2>Update page</h2>
 </head>
 <body>
+    <p><c:out value="${errorMassage}"/></p>
     <form action="updatePost" method="post">
     	<table>
 			<tr>

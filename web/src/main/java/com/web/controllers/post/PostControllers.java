@@ -52,24 +52,21 @@ public class PostControllers {
     }
 
     @PostMapping(value = {"/addPost"})
-    public ModelAndView addPost(@ModelAttribute(value = "addPostForm") PostForm addPostForm, HttpServletRequest request){
+    public ModelAndView addPost(@ModelAttribute(value = "addPostForm") PostForm addPostForm, HttpServletRequest request,
+                                HttpServletResponse response) throws IOException {
 
-        ModelAndView modelAndView;
+        ModelAndView modelAndView= new ModelAndView("addPost");;
         UserForm userForm = (UserForm) request.getSession().getAttribute("user");
         addPostForm.setIdUser(userForm.getId());
         try{
             postFasad.addPost(addPostForm);
+            response.sendRedirect(request.getContextPath()+"/post/postsOfTopic?idTopic="+addPostForm.getIdTopic()+
+                    "&idUser="+addPostForm.getIdUser());
         } catch (LogicException e) {
 
-            modelAndView = new ModelAndView("addPost");
             modelAndView.addObject("addPostForm", new PostForm());
             modelAndView.addObject("errorMassage","Incorrect name or password");
         }
-
-        modelAndView = new ModelAndView("postsOfTopic");
-        modelAndView.addObject("idTopic",addPostForm.getIdTopic());
-        List<PostForm> posts = postFasad.getPostsByUserTopic(userForm.getId(), addPostForm.getIdTopic());
-        request.setAttribute("posts",posts);
 
         return modelAndView;
     }
@@ -84,21 +81,18 @@ public class PostControllers {
     }
 
     @PostMapping(value = {"/updatePost"})
-    public ModelAndView updatePost(@ModelAttribute("updatePostForm") PostForm updatePostForm, HttpServletRequest request){
+    public ModelAndView updatePost(@ModelAttribute("updatePostForm") PostForm updatePostForm, HttpServletRequest request,
+                                   HttpServletResponse response) throws IOException {
 
-        ModelAndView modelAndView;
+        ModelAndView modelAndView = new ModelAndView("updatePost");
         try {
-
             postFasad.updatePost(updatePostForm);
-            modelAndView = new ModelAndView("postsOfTopic");
-            modelAndView.addObject("idTopic",updatePostForm.getIdTopic());
-            List<PostForm> posts = postFasad.getPostsByUserTopic(updatePostForm.getIdUser(), updatePostForm.getIdTopic());
-            request.setAttribute("posts",posts);
+            response.sendRedirect(request.getContextPath()+"/post/postsOfTopic?idTopic="+updatePostForm.getIdTopic()+
+                    "&idUser="+updatePostForm.getIdUser());
 
         } catch (LogicException e) {
-
-            modelAndView = new ModelAndView("updatePost");
             modelAndView.addObject("updatePostForm",updatePostForm);
+            modelAndView.addObject("errorMassage",e.getMessage());
         }
         return modelAndView;
     }
