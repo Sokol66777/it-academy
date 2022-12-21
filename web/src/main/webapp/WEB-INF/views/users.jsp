@@ -8,13 +8,13 @@
     <p>Users page</p>
     <c:forEach var="user" items= "${allUsers}">
         <p><c:out value="${user}"/>
-        <button onclick = "location.href='delete?deleteUsersID=${user.id}'">delete</button>
-        <button onclick = "location.href='update?updateUsersID=${user.id}'">Update</button>
+        <button onclick = "location.href='${pageContext.request.contextPath}/user/delete?deleteUsersID=${user.id}'">delete</button>
+        <button onclick = "location.href='${pageContext.request.contextPath}/user/preUpdate?updateUsersID=${user.id}'">Update</button>
 
         </p>
     </c:forEach>
-    <button onclick = "location.href='${pageContext.request.contextPath}/welcome'">welcome</button>
-    <button onclick = "location.href= '${pageContext.request.contextPath}/logout'"> logout </button>
+    <button onclick = "location.href='${pageContext.request.contextPath}/user/welcome'">welcome</button>
+    <button onclick = "location.href= '${pageContext.request.contextPath}/user/logout'"> logout </button>
 
 </body>
 </html>

@@ -3,6 +3,7 @@ package com.pvt.dao.daoImpl;
 import com.pvt.dao.BaseDAO;
 import com.pvt.exceptions.UserLogicException;
 import com.pvt.dao.UserDAO;
+import com.pvt.validation.ValidationUsersParametrs;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import com.pvt.model.User;
@@ -76,24 +77,6 @@ public class UserDAOImpl extends BaseDAO<User> implements UserDAO {
     @Override
     public void modify(User user) throws UserLogicException {
 
-        User userCheck;
-        User userOld = super.get(user.getID());
-
-        if(!userOld.getUsername().equals(user.getUsername())){
-
-            userCheck = getByUsername(user.getUsername());
-            if (userCheck != null) {
-                throw new UserLogicException("this username used");
-            }
-        }
-
-        if(!userOld.getEmail().equals(user.getEmail())){
-
-            userCheck = getByEmail(user.getEmail());
-            if (userCheck != null) {
-                throw new UserLogicException("this email used");
-            }
-        }
         entityManager.merge(user);
     }
 

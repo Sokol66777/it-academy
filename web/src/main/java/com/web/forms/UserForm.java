@@ -20,10 +20,13 @@ public class UserForm {
 
     private long id;
     private String username;
+    private String newUsername;
     private String password;
     private String email;
     private String role;
     private String confirmedPassword;
+    private String newPassword;
+    private String newEmail;
     private Set<TopicForm> topics = new HashSet<>();
 
     public UserForm(User user) {
@@ -61,9 +64,9 @@ public class UserForm {
     public String toString() {
         return
                 "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", role='" + role + '\'' ;
+                ", username=" + username +
+                ", password=" + password +
+                ", email=" + email +
+                ", role=" + role  ;
     }
 }

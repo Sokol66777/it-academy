@@ -8,7 +8,7 @@
 
 </head>
 <body>
-
+    <p><c:out value="${errorMassage}"/></p>
     <p>Welcome,
        <c:out value="${user.username}"/></p>
 
@@ -23,14 +23,14 @@
         <p2>Your topics</p2>
         <c:forEach var="topic" items = "${user.topics}">
             <p><c:out value = "${topic.name}"/>
-            <button onclick = "location.href='${pageContext.request.contextPath}/postsOfTopic?idTopic=${topic.id}'">Go to</button>
-            <button onclick = "location.href='${pageContext.request.contextPath}/deleteTopic?deleteTopicID=${topic.id}'">Delete Topic</button></p>
+            <button onclick = "location.href='${pageContext.request.contextPath}/post/postsOfTopic?idTopic=${topic.id}&idUser=${user.id}'">Go to</button>
+            <button onclick = "location.href='${pageContext.request.contextPath}/topic/delete?deleteTopicID=${topic.id}'">Delete Topic</button></p>
         </c:forEach>
     </c:if>
     <p></p>
     <button onclick = "location.href='${pageContext.request.contextPath}/user/logout'"> logout </button>
-    <button onclick = "location.href='${pageContext.request.contextPath}/update?updateUsersID=${user.id}'">Update</button>
-    <button onclick = "location.href='${pageContext.request.contextPath}/addTopic'">Add topic</button>
+    <button onclick = "location.href='${pageContext.request.contextPath}/user/preUpdate?updateUsersID=${user.id}'">Update</button>
+    <button onclick = "location.href='${pageContext.request.contextPath}/topic/preAdd'">Add topic</button>
     <c:if test="${user.role=='admin'}">
        <button onclick = "location.href='${pageContext.request.contextPath}/user/allUsers?adminName=${user.username}'">All users</button>
     </c:if>

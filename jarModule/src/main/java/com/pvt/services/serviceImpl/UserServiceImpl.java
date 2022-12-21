@@ -62,4 +62,31 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
         }
         userDAOService.add(user);
     }
+
+    @Transactional
+    @Override
+    public void modify(User user) throws LogicException {
+
+        User userCheck;
+        User userOld = userDAOService.get(user.getID());
+
+        ValidationUsersParametrs.validationPassword(user.getPassword());
+
+        if(!userOld.getUsername().equals(user.getUsername())){
+
+            userCheck = userDAOService.getByUsername(user.getUsername());
+            if (userCheck != null) {
+                throw new UserLogicException("this username used");
+            }
+        }
+
+        if(!userOld.getEmail().equals(user.getEmail())){
+
+            userCheck = userDAOService.getByEmail(user.getEmail());
+            if (userCheck != null) {
+                throw new UserLogicException("this email used");
+            }
+        }
+        userDAOService.modify(user);
+    }
 }

@@ -47,6 +47,7 @@ public class LoginController {
             }
         }else{
             modelAndView = new ModelAndView("login");
+            modelAndView.addObject("loginForm",new UserForm());
             modelAndView.addObject("errorMassage","Incorrect name or password");
 
         }

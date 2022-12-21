@@ -32,21 +32,23 @@ public class RegistrationController {
         ModelAndView modelAndView;
 
         if(!registrationForm.getConfirmedPassword().equals(registrationForm.getPassword())){
+
             modelAndView = new ModelAndView("addUser");
+            modelAndView.addObject("registrationForm",new UserForm());
             modelAndView.addObject("errorMassage","password is not confirmed");
         }else{
             try {
+
                 userFasad.addUser(registrationForm);
                 UserForm newUser = userFasad.getByUsername(registrationForm.getUsername());
                 UserForm userWithTopic = userFasad.getUserByIdWithTopic(newUser.getId());
-
                 request.getSession().setAttribute("user",userWithTopic);
                 modelAndView = new ModelAndView("welcome");
-
-
             } catch (LogicException  e) {
+
                 modelAndView = new ModelAndView("addUser");
                 modelAndView.addObject("errorMassage",e.getMessage());
+                modelAndView.addObject("registrationForm",new UserForm());
             }
 
         }
