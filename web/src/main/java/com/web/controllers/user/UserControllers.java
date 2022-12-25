@@ -96,7 +96,7 @@ public class UserControllers {
 
                 user.setPassword(updateUserForm.getNewPassword());
             }
-            if(imageForm.getImage()!=null){
+            if(imageForm!=null){
                 user.setImage(imageForm.getImage());
             }
             user.setEmail(updateUserForm.getNewEmail());
