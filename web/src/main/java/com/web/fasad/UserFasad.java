@@ -30,6 +30,7 @@ public class UserFasad {
         user.setEmail(userForm.getEmail());
         user.setRole(userForm.getRole());
         user.setPassword(userForm.getPassword());
+        user.setImage(userForm.getImage());
         Set<Topic> topics = new HashSet<>();
         for(TopicForm topicForm:userForm.getTopics()){
 

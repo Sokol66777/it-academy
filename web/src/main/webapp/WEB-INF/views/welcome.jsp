@@ -12,6 +12,8 @@
     <p>Welcome,
        <c:out value="${user.username}"/></p>
 
+       <p><img src="${pageContext.request.contextPath}/user/imageOnWelcomePage" width="100"/></p>
+
     <c:if test="${user.role=='admin'}">
         <p2>All Topics</p2>
         <c:forEach var="topic" items = "${allTopics}">

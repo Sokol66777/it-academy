@@ -6,7 +6,7 @@
 </head>
 <body>
     <p><c:out value="${errorMassage}"/></p>
-    <form action="add" method="post">
+    <form action="${pageContext.request.contextPath}/add" method="post">
     	<table>
 			<tr>
     			<td>User Name</td>
@@ -24,11 +24,21 @@
                 <td>Email</td>
                 <td><input type = "email" name="email" required="required"/></td>
             </tr>
+            <tr>
+                <td><img src="${pageContext.request.contextPath}/user/viewImage" width="100"</td>
+            </tr>
         	<tr>
-        		<td><input type = "submit" value="add"/></td>
+        		<td><input type = "submit" value="Registration"/></td>
 			</tr>
 		</table>
 	</form>
+
+	<form action="${pageContext.request.contextPath}/user/uploadPhoto" enctype="multipart/form-data" method="post">
+        <p>Выберите ваше фото</p>
+        <p><input type="file" name="fileData" >
+        <input type="submit" value="Загрузить"></p>
+    </form>
+
 		<button onclick = "location.href='${pageContext.request.contextPath}/'">Start Page </button>
 </body>
 </html>

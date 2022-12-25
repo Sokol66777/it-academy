@@ -7,6 +7,7 @@ import com.pvt.model.User;
 import jakarta.persistence.SecondaryTable;
 import lombok.*;
 import org.hibernate.LazyInitializationException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,6 +29,8 @@ public class UserForm {
     private String newPassword;
     private String newEmail;
     private Set<TopicForm> topics = new HashSet<>();
+    private MultipartFile fileData;
+    private byte[] image;
 
     public UserForm(User user) {
         this.password = user.getPassword();
@@ -35,6 +38,7 @@ public class UserForm {
         this.id = user.getID();
         this.email = user.getEmail();
         this.role = user.getRole();
+        this.image= user.getImage();
         try {
             for (Topic topic : user.getTopics()) {
                 TopicForm topicForm = new TopicForm();

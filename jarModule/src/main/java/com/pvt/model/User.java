@@ -35,6 +35,10 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
 
+    @Lob
+    @Column(name = "image")
+    private byte[] image;
+
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
     private Set <Post> posts=new HashSet<>();

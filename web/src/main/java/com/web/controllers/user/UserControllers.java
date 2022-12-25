@@ -2,6 +2,7 @@ package com.web.controllers.user;
 
 
 import com.pvt.exceptions.LogicException;
+import com.pvt.model.User;
 import com.web.fasad.UserFasad;
 import com.web.forms.UserForm;
 import jakarta.servlet.http.HttpServletRequest;
@@ -73,6 +74,7 @@ public class UserControllers {
 
         ModelAndView modelAndView = new ModelAndView("updateUser");
         modelAndView.addObject("updateUserForm",updateUserForm);
+        modelAndView.addObject("imageForm",new UserForm());
 
         return modelAndView;
     }
@@ -81,6 +83,7 @@ public class UserControllers {
     public ModelAndView updateUser(@ModelAttribute("updateUser") UserForm updateUserForm, HttpServletRequest request){
 
         UserForm user = userFasad.get(updateUserForm.getId());
+        UserForm imageForm = (UserForm) request.getSession().getAttribute("imageForm");
         ModelAndView modelAndView;
         if(updateUserForm.getConfirmedPassword()!= null &&!updateUserForm.getConfirmedPassword().equals(updateUserForm.getNewPassword())){
 
@@ -92,6 +95,9 @@ public class UserControllers {
             if(updateUserForm.getConfirmedPassword()!= null ) {
 
                 user.setPassword(updateUserForm.getNewPassword());
+            }
+            if(imageForm.getImage()!=null){
+                user.setImage(imageForm.getImage());
             }
             user.setEmail(updateUserForm.getNewEmail());
             user.setUsername(updateUserForm.getNewUsername());
@@ -109,10 +115,50 @@ public class UserControllers {
                 modelAndView = new ModelAndView("updateUser");
                 modelAndView.addObject("errorMassage", e.getMessage());
                 modelAndView.addObject("updateUserForm",userFasad.get(updateUserForm.getId()));
+                modelAndView.addObject("imageForm",new UserForm());
                 return modelAndView;
             }
         }
-
         return modelAndView ;
+    }
+
+    @PostMapping(value = {"/uploadPhoto"})
+    public ModelAndView uploadPhoto(@ModelAttribute("imageForm") UserForm imageForm, HttpServletRequest request) throws IOException {
+
+        ModelAndView modelAndView;
+        UserForm userForm = (UserForm)request.getSession().getAttribute("user");
+        imageForm.setImage(imageForm.getFileData().getBytes());
+        request.getSession().setAttribute("imageForm",imageForm);
+        if(userForm!=null){
+            modelAndView = new ModelAndView("updateUser");
+            modelAndView.addObject("updateUserForm",userForm);
+        }else{
+            userForm=new UserForm();
+            modelAndView = new ModelAndView("addUser");
+            modelAndView.addObject("registrationForm",userForm);
+        }
+        return modelAndView;
+    }
+
+    @GetMapping(value = {"/viewImage"})
+    public void viewImage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        UserForm imageForm = (UserForm) request.getSession().getAttribute("imageForm");
+        if(imageForm.getImage()!=null) {
+
+            response.setContentType("image/jpg");
+            response.getOutputStream().write(imageForm.getImage());
+        }
+        response.getOutputStream().close();
+    }
+
+    @GetMapping(value = {"/imageOnWelcomePage"})
+    public void imageOnWelcomePage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        UserForm userForm = (UserForm) request.getSession().getAttribute("user");
+        if (userForm.getImage() != null) {
+
+            response.setContentType("img/jpg");
+            response.getOutputStream().write(userForm.getImage());
+        }
+        response.getOutputStream().close();
     }
 }

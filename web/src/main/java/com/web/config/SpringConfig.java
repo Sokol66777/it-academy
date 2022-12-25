@@ -5,6 +5,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -53,5 +54,28 @@ public class SpringConfig {
     public PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslationPostProcessor(){
         return new PersistenceExceptionTranslationPostProcessor();
     }
+
+    @Bean
+    public JavaMailSenderImpl getJavaMailSenderImpl(){
+        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+        javaMailSender.setPort(587);
+        javaMailSender.setUsername("Sokol66777@gmail.com");
+        javaMailSender.setPassword("nqcbaekkmzfaoyhj");
+        javaMailSender.setJavaMailProperties(javaMailSenderProp());
+        return javaMailSender;
+    }
+
+    private Properties javaMailSenderProp(){
+        Properties properties = new Properties();
+        properties.put("mail.transport.protocol","smtp");
+        properties.put("mail.smtp.auth","true");
+        properties.put("mail.smtp.host","smtp.gmail.com");
+        properties.put("mail.smtp.starttls.enable","true");
+        properties.put("mail.debug","true");
+        properties.put("mail.smtp.starttls.required","true");
+        properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        return properties;
+    }
+
 
 }

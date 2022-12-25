@@ -1,5 +1,6 @@
 package com.web.controllers.user;
 
+import com.web.fasad.EmailService;
 import com.web.fasad.TopicFasad;
 import com.web.fasad.UserFasad;
 import com.web.forms.UserForm;
@@ -22,6 +23,8 @@ public class LoginController {
     @Autowired
     TopicFasad topicFasad;
 
+    @Autowired
+    EmailService emailService;
 
     @GetMapping(value = {"/start"})
     public ModelAndView startApp(){
@@ -51,6 +54,7 @@ public class LoginController {
             modelAndView.addObject("errorMassage","Incorrect name or password");
 
         }
+        emailService.sendEmail("Sokol66777@mail.ru", user.getEmail(), "loggin", "user "+user.getUsername()+" loggin in APP");
         return modelAndView;
     }
 }

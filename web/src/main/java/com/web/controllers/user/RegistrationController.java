@@ -24,21 +24,26 @@ public class RegistrationController {
     public ModelAndView redirectToRegistration(){
         ModelAndView modelAndView = new ModelAndView("addUser");
         modelAndView.addObject("registrationForm",new UserForm());
+        modelAndView.addObject("imageForm", new UserForm());
         return modelAndView;
     }
 
     @PostMapping
     public ModelAndView registrationUser(@ModelAttribute("registrationForm") UserForm registrationForm, HttpServletRequest request){
         ModelAndView modelAndView;
+        UserForm imageForm = (UserForm) request.getSession().getAttribute("imageForm");
 
         if(!registrationForm.getConfirmedPassword().equals(registrationForm.getPassword())){
 
             modelAndView = new ModelAndView("addUser");
             modelAndView.addObject("registrationForm",new UserForm());
+            modelAndView.addObject("imageForm",new UserForm());
             modelAndView.addObject("errorMassage","password is not confirmed");
         }else{
             try {
-
+                if(imageForm.getImage()!=null){
+                    registrationForm.setImage(imageForm.getImage());
+                }
                 userFasad.addUser(registrationForm);
                 UserForm newUser = userFasad.getByUsername(registrationForm.getUsername());
                 UserForm userWithTopic = userFasad.getUserByIdWithTopic(newUser.getId());
@@ -49,6 +54,7 @@ public class RegistrationController {
                 modelAndView = new ModelAndView("addUser");
                 modelAndView.addObject("errorMassage",e.getMessage());
                 modelAndView.addObject("registrationForm",new UserForm());
+                modelAndView.addObject("imageForm",new UserForm());
             }
 
         }
