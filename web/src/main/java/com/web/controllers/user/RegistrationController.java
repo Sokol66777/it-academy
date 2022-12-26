@@ -41,7 +41,7 @@ public class RegistrationController {
             modelAndView.addObject("errorMassage","password is not confirmed");
         }else{
             try {
-                if(imageForm.getImage()!=null){
+                if(imageForm!=null){
                     registrationForm.setImage(imageForm.getImage());
                 }
                 userFasad.addUser(registrationForm);

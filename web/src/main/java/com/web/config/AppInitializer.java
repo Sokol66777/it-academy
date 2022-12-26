@@ -1,7 +1,10 @@
 package com.web.config;
 
 import jakarta.servlet.MultipartConfigElement;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRegistration;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import java.io.File;
@@ -36,6 +39,17 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
         MultipartConfigElement multipartConfigElement = new MultipartConfigElement(uploadDirectory.getAbsolutePath(),
                 maxUploadSize,maxUploadSize*2,maxUploadSize/2);
         return multipartConfigElement;
+    }
+
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+
+        super.onStartup(servletContext);
+        DelegatingFilterProxy allUsersFilter = new DelegatingFilterProxy();
+        allUsersFilter.setTargetBeanName("allUsersFilter");
+
+        servletContext.addFilter("allUsersFilter", allUsersFilter.getClass())
+                .addMappingForUrlPatterns(null, false,"/user/allUsers");
     }
 
 }

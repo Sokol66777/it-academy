@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import java.util.Properties;
 
 @Configuration
-@ComponentScan(basePackages = {"com.pvt.dao","com.pvt.services","com.web.fasad"})
+@ComponentScan(basePackages = {"com.pvt.dao","com.pvt.services","com.web.fasad","com.web.interceptors","com.web.filters"})
 @EnableTransactionManagement
 public class SpringConfig {
 
