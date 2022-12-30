@@ -1,7 +1,7 @@
 package service.serviceImpl;
 
-import exceptions.LogicException;
-import model.Post;
+import com.pvt.exceptions.LogicException;
+import com.pvt.model.Post;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import services.PostService;
-import services.TopicService;
-import services.UserService;
+import com.pvt.services.PostService;
+import com.pvt.services.TopicService;
+import com.pvt.services.UserService;
 
 import static org.junit.Assert.*;
 
