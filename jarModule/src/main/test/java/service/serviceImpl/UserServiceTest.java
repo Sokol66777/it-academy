@@ -3,6 +3,7 @@ package service.serviceImpl;
 import com.pvt.config.SpringConfig;
 import com.pvt.exceptions.LogicException;
 import com.pvt.model.User;
+import com.pvt.repository.UserRepository;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +27,8 @@ public class UserServiceTest {
     private final String UPDATE_USERNAME = "test_update";
     @Autowired
     private UserService userService;
+    @Autowired
+    UserRepository userRepository;
 
     @Test
     @Ignore
@@ -33,6 +36,11 @@ public class UserServiceTest {
         assertEquals(userService.get(1).getUsername(),"user1");
     }
 
+    @Test
+    public void repoTest(){
+        User user = userRepository.findById(1L).orElse(null);
+        System.out.println(user.toString());
+    }
     @Test
     @Ignore
     public void addTest() throws LogicException {
