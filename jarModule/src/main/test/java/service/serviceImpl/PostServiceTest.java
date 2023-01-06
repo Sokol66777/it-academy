@@ -1,5 +1,6 @@
 package service.serviceImpl;
 
+import com.pvt.config.SpringConfig;
 import com.pvt.exceptions.LogicException;
 import com.pvt.model.Post;
 import org.junit.Ignore;
@@ -13,10 +14,12 @@ import com.pvt.services.PostService;
 import com.pvt.services.TopicService;
 import com.pvt.services.UserService;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring-hibernate.xml")
+@ContextConfiguration(classes = SpringConfig.class)
 public class PostServiceTest {
 
     private final String POST_TEXT = "djkvnvnjnjgkjfbg";
@@ -24,11 +27,11 @@ public class PostServiceTest {
     private final String UPDATE_POST_TEXT = "new text";
 
     @Autowired
-    public UserService userService;
+    private UserService userService;
     @Autowired
-    public TopicService topicService;
+    private TopicService topicService;
     @Autowired
-    public PostService postService;
+    private PostService postService;
 
     @Test
     @Ignore
@@ -42,8 +45,8 @@ public class PostServiceTest {
         Post post = new Post();
         post.setText(POST_TEXT);
         post.setName(POST_NAME);
-        post.setUser(userService.get(4));
-        post.setTopic(topicService.get(7));
+        post.setUser(userService.get(4L));
+        post.setTopic(topicService.get(7L));
         postService.add(post);
     }
 
@@ -77,14 +80,16 @@ public class PostServiceTest {
     @Test
     @Ignore
     public void getPostsByUserTopicTest(){
-        assertNotNull(postService.getPostsByUserTopic(4,7));
+        assertNotNull(postService.getPostsByUserTopic(4L,5L));
+        List<Post> posts = postService.getPostsByUserTopic(4L,5L);
+        System.out.println(posts.toString());
     }
 
     @Test
     @Ignore
     public void deleteNegativeTest(){
         assertThrows(InvalidDataAccessApiUsageException.class,()->{
-            postService.delete(8754585);
+            postService.delete(8754585L);
         });
     }
 

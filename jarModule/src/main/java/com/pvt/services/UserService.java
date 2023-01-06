@@ -4,7 +4,7 @@ import com.pvt.model.User;
 
 import java.util.List;
 
-public interface UserService extends IService<User>{
+public interface UserService extends IService<User,Long>{
 
     List<User> getAllUsers() ;
 
@@ -12,6 +12,6 @@ public interface UserService extends IService<User>{
 
     User getByEmail(String email) ;
 
-    User getUserByIdWithTopic(long id);
+    User getUserByIdWithTopic(Long id);
 
 }

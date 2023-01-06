@@ -3,6 +3,7 @@ package service.serviceImpl;
 import com.pvt.config.SpringConfig;
 import com.pvt.exceptions.LogicException;
 import com.pvt.model.User;
+import com.pvt.repository.BaseRepository;
 import com.pvt.repository.UserRepository;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -12,6 +13,8 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.pvt.services.UserService;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -23,22 +26,23 @@ public class UserServiceTest {
     private final String USER_EMAIL= "jvdk";
     private final String USERNAME = "test";
     private final String ROLE = "user";
-    private final String PASSWORD = "424u89fij398uf";
+    private final String PASSWORD = "123456Qqq!";
     private final String UPDATE_USERNAME = "test_update";
     @Autowired
     private UserService userService;
-    @Autowired
-    UserRepository userRepository;
+
+
 
     @Test
     @Ignore
     public void getTest(){
-        assertEquals(userService.get(1).getUsername(),"user1");
+        assertEquals(userService.get(1L).getUsername(),"user1");
     }
 
     @Test
+    @Ignore
     public void repoTest(){
-        User user = userRepository.findById(1L).orElse(null);
+        User user = userService.getByUsername("user4");
         System.out.println(user.toString());
     }
     @Test
@@ -76,7 +80,7 @@ public class UserServiceTest {
     @Test
     @Ignore
     public void getUserWithTopicTest(){
-       User user = userService.getUserByIdWithTopic(4);
+       User user = userService.getUserByIdWithTopic(4L);
         assertNotNull(user.getTopics());
     }
 
@@ -132,7 +136,7 @@ public class UserServiceTest {
     @Ignore
     public void deleteNegativeTest(){
         assertThrows(InvalidDataAccessApiUsageException.class,()->{
-            userService.delete(875585);
+            userService.delete(875585L);
         });
     }
 

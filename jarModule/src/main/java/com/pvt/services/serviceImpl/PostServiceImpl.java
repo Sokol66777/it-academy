@@ -2,6 +2,7 @@ package com.pvt.services.serviceImpl;
 
 import com.pvt.dao.PostDAO;
 import com.pvt.model.Post;
+import com.pvt.repository.PostRepository;
 import com.pvt.services.BaseService;
 import com.pvt.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,26 +11,26 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class PostServiceImpl extends BaseService<Post> implements PostService {
+public class PostServiceImpl extends BaseService<Post,Long> implements PostService {
 
     @Autowired
-    private PostDAO postDAOService;
+    private PostRepository postRepositoryService;
 
     @Override
     public List<Post> getAll() {
 
-        return postDAOService.getAll();
+        return postRepositoryService.findAll();
     }
 
     @Override
     public Post getByName(String name) {
 
-        return postDAOService.getByName(name);
+        return postRepositoryService.findByName(name).orElse(null);
     }
 
     @Override
-    public List<Post> getPostsByUserTopic(long idUser, long idTopic) {
+    public List<Post> getPostsByUserTopic(Long idUser, Long idTopic) {
 
-        return postDAOService.getPostsByUserTopic(idUser,idTopic);
+        return postRepositoryService.getPostsByUserTopic(idUser,idTopic);
     }
 }
