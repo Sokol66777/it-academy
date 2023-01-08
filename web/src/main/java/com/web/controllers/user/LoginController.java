@@ -33,34 +33,34 @@ public class LoginController {
     }
 
 
-    @PostMapping(value = {"/login"})
+    @PostMapping(value = {"/loginS"})
     public ModelAndView welcome(@ModelAttribute("loginForm") UserForm loginForm, HttpServletRequest request){
 
-        UserForm user = userFasad.getByUsername(loginForm.getUsername());
+        UserForm user = null;
         ModelAndView modelAndView;
-        if (user != null && user.getPassword().equals(loginForm.getPassword())) {
 
-            modelAndView = new ModelAndView("welcome");
-            emailService.sendEmail("Sokol66777@mail.ru", user.getEmail(), "loggin", "user "+user.getUsername()+" loggin in APP");
-            if(user.getImage()!=null){
-
-                request.getSession().setAttribute("imageForm",user);
-            }
-            if (user.getRole().equals("admin")) {
-
-                request.getSession().setAttribute("user", user);
-                request.getSession().setAttribute("allTopics", topicFasad.getAllTopics());
-            } else {
-
-                UserForm userWithTopic = userFasad.getUserByIdWithTopic(user.getId());
-                request.getSession().setAttribute("user", userWithTopic);
-            }
-        }else{
-            modelAndView = new ModelAndView("login");
-            modelAndView.addObject("loginForm",new UserForm());
-            modelAndView.addObject("errorMassage","Incorrect name or password");
-
+        try {
+            user=userFasad.getByUsername(loginForm.getUsername());
+        }catch (Exception e){
         }
+
+        modelAndView = new ModelAndView("welcome");
+
+        if(user.getImage()!=null){
+
+            request.getSession().setAttribute("imageForm",user);
+        }
+        if (user.getRole().equals("admin")) {
+
+            request.getSession().setAttribute("user", user);
+            request.getSession().setAttribute("allTopics", topicFasad.getAllTopics());
+        } else {
+
+            UserForm userWithTopic = userFasad.getUserByIdWithTopic(user.getId());
+            request.getSession().setAttribute("user", userWithTopic);
+        }
+
+        emailService.sendEmail("Sokol66777@mail.ru", user.getEmail(), "login", "user "+user.getUsername()+" login in APP");
         return modelAndView;
     }
 }

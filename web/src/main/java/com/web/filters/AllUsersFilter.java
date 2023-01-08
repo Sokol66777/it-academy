@@ -19,12 +19,12 @@ public class AllUsersFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
-        HttpServletRequest req = (HttpServletRequest)request;
-        UserForm userForm=(UserForm) req.getSession().getAttribute("user");
-        if(userForm!=null&&!userForm.getRole().equals("admin")){
-            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/welcome.jsp");
-            rd.forward(request,response);
-        }
+//        HttpServletRequest req = (HttpServletRequest)request;
+//        UserForm userForm=(UserForm) req.getSession().getAttribute("user");
+//        if(userForm!=null&&!userForm.getRole().equals("admin")){
+//            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/welcome.jsp");
+//            rd.forward(request,response);
+//        }
         chain.doFilter(request,response);
     }
 

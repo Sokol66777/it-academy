@@ -12,11 +12,11 @@ public class UserIsLoggedInInterceptor extends WebContentInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
-        if(request.getSession().getAttribute("user")==null){
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/views/login.jsp");
-            requestDispatcher.forward(request,response);
-            return false;
-        }
+//        if(request.getSession().getAttribute("user")==null){
+//            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/views/login.jsp");
+//            requestDispatcher.forward(request,response);
+//            return false;
+//        }
         return true;
     }
 }
