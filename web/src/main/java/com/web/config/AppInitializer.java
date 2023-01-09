@@ -1,7 +1,6 @@
 package com.web.config;
 
 import jakarta.servlet.*;
-import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -44,15 +43,5 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
         return multipartConfigElement;
     }
 
-    @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-
-        super.onStartup(servletContext);
-        DelegatingFilterProxy allUsersFilter = new DelegatingFilterProxy();
-        allUsersFilter.setTargetBeanName("allUsersFilter");
-
-        servletContext.addFilter("allUsersFilter", allUsersFilter.getClass())
-                .addMappingForUrlPatterns(null, false,"/user/allUsers");
-    }
 
 }

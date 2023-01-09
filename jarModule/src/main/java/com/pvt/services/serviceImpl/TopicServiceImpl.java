@@ -1,6 +1,5 @@
 package com.pvt.services.serviceImpl;
 
-import com.pvt.dao.TopicDAO;
 import com.pvt.exceptions.LogicException;
 import com.pvt.exceptions.TopicLogicException;
 import com.pvt.model.Topic;

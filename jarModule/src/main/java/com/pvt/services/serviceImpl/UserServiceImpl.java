@@ -1,6 +1,5 @@
 package com.pvt.services.serviceImpl;
 
-import com.pvt.dao.UserDAO;
 import com.pvt.exceptions.LogicException;
 import com.pvt.exceptions.UserLogicException;
 import com.pvt.model.User;

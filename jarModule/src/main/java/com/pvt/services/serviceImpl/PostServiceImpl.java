@@ -1,6 +1,5 @@
 package com.pvt.services.serviceImpl;
 
-import com.pvt.dao.PostDAO;
 import com.pvt.model.Post;
 import com.pvt.repository.PostRepository;
 import com.pvt.services.BaseService;

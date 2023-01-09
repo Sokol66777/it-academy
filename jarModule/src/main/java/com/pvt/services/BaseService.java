@@ -1,12 +1,10 @@
 package com.pvt.services;
 
-import com.pvt.dao.DAO;
+
 import com.pvt.exceptions.LogicException;
-import com.pvt.model.User;
 import com.pvt.repository.BaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @NoRepositoryBean

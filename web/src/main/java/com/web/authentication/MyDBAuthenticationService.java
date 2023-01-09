@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,11 +32,14 @@ public class MyDBAuthenticationService implements UserDetailsService {
             throw new UsernameNotFoundException("User "+ username + " was not found");
         }
 
+
+
         List<GrantedAuthority> grantList = new ArrayList<>();
 
         GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_"+account.getRole());
 
         grantList.add(authority);
+
 
         boolean enabled = true;
         boolean accountNonExpired = true;

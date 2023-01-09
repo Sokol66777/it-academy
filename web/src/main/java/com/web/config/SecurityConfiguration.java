@@ -7,13 +7,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -38,14 +39,24 @@ public class SecurityConfiguration {
     public SecurityFilterChain formLoginFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf().disable()
-                .authorizeHttpRequests(authorize->authorize.requestMatchers("/add").permitAll()
-                        .requestMatchers("/").permitAll()
-                        .anyRequest().authenticated())
+                .authorizeHttpRequests(authorize->authorize.requestMatchers("/").permitAll()
+                        .requestMatchers("/user/**","/topic/**","/post/**","/start").authenticated()
+                        .anyRequest().permitAll())
                 .formLogin()
                 .successForwardUrl("/loginS");
 
         return http.build();
     }
 
+    @Bean
+    @Order(1)
+    public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
+
+        http.securityMatcher("/user/allUsers").authorizeHttpRequests(authorize->authorize
+                .anyRequest().hasRole("admin"))
+                .httpBasic(withDefaults()).exceptionHandling().accessDeniedPage("/WEB-INF/views/welcome.jsp");
+
+        return http.build();
+    }
 
 }
