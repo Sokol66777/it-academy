@@ -1,6 +1,7 @@
 package com.web.fasad;
 
 import com.pvt.exceptions.LogicException;
+import com.pvt.exceptions.UserLogicException;
 import com.pvt.model.Post;
 import com.pvt.model.Topic;
 import com.pvt.model.User;
@@ -9,12 +10,15 @@ import com.web.forms.PostForm;
 import com.web.forms.TopicForm;
 import com.web.forms.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static com.pvt.validation.ValidationUsersParametrs.validationPassword;
 
 @Component
 public class UserFasad {
@@ -75,6 +79,13 @@ public class UserFasad {
 
     public void addUser(UserForm userForm) throws LogicException {
 
+        try{
+            validationPassword(userForm.getPassword());
+        }catch (UserLogicException e){
+            throw new LogicException(e);
+        }
+
+        userForm.setPassword(BCrypt.hashpw(userForm.getPassword(), BCrypt.gensalt(10)));
         User user = buildUser(userForm);
         userService.add(user);
     }
@@ -103,6 +114,7 @@ public class UserFasad {
     }
 
     public void update(UserForm userForm) throws LogicException {
+
 
         User user = buildUser(userForm);
         userService.modify(user);

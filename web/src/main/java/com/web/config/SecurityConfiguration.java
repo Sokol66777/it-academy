@@ -40,21 +40,11 @@ public class SecurityConfiguration {
 
         http.csrf().disable()
                 .authorizeHttpRequests(authorize->authorize.requestMatchers("/").permitAll()
+                        .requestMatchers("/user/allUsers").hasAnyRole("admin")
                         .requestMatchers("/user/**","/topic/**","/post/**","/start").authenticated()
                         .anyRequest().permitAll())
                 .formLogin()
                 .successForwardUrl("/loginS");
-
-        return http.build();
-    }
-
-    @Bean
-    @Order(1)
-    public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
-
-        http.securityMatcher("/user/allUsers").authorizeHttpRequests(authorize->authorize
-                .anyRequest().hasRole("admin"))
-                .httpBasic(withDefaults()).exceptionHandling().accessDeniedPage("/WEB-INF/views/welcome.jsp");
 
         return http.build();
     }

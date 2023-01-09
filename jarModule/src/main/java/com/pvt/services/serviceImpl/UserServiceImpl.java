@@ -49,7 +49,6 @@ public class UserServiceImpl extends BaseService<User,Long> implements UserServi
         User userCheck;
         user.setRole("user");
 
-        ValidationUsersParametrs.validationPassword(user.getPassword());
 
         userCheck = getByEmail(user.getEmail());
         if (userCheck != null) {
@@ -69,8 +68,6 @@ public class UserServiceImpl extends BaseService<User,Long> implements UserServi
 
         User userCheck;
         User userOld = userRepositoryService.findById(user.getID()).orElse(null);
-
-        ValidationUsersParametrs.validationPassword(user.getPassword());
 
         if(!userOld.getUsername().equals(user.getUsername())){
 
