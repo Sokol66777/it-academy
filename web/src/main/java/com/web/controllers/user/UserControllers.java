@@ -103,16 +103,16 @@ public class UserControllers {
             user.setEmail(updateUserForm.getNewEmail());
             user.setUsername(updateUserForm.getNewUsername());
             try{
-                if(updateUserForm.getNewPassword()!=null) {
-                    if(!updateUserForm.getNewPassword().equals("")){
-                        try{
-                            validationPassword(updateUserForm.getNewPassword());
-                            user.setPassword(BCrypt.hashpw(updateUserForm.getNewPassword(), BCrypt.gensalt(10)));
-                        }catch (UserLogicException e){
-                            throw new LogicException(e);
-                        }
+                if(updateUserForm.getNewPassword()!=null && !updateUserForm.getNewPassword().equals("")) {
+
+                    try{
+                        validationPassword(updateUserForm.getNewPassword());
+                        user.setPassword(BCrypt.hashpw(updateUserForm.getNewPassword(), BCrypt.gensalt(10)));
+                    }catch (UserLogicException e){
+                        throw new LogicException(e);
                     }
                 }
+
                 userFasad.update(user);
                 UserForm userFromSession = (UserForm) request.getSession().getAttribute("user");
                 if(userFromSession.getId()==updateUserForm.getId()){
