@@ -20,13 +20,9 @@
     		<tr>
     		    <c:if test="${user.username==updateUserForm.username}">
     		        <tr>
-    			        <td>Password</td>
-        		        <td><input type = "password" name="newPassword"  required="required" value="<c:out value='${updateUserForm.password}'/>"/></td>
+    			        <td>new Password (not required)</td>
+        		        <td><input type = "password" name="newPassword"  /></td>
         		    </tr>
-        		    <tr>
-        		        <td>Confirmed password</td>
-                        <td><input type = "password" name="confirmedPassword"  required="required" value="<c:out value='${updateUserForm.password}'/>"/></td>
-			        </tr>
                     <tr>
                         <td><img src="${pageContext.request.contextPath}/user/viewImage" width="100"</td>
                     </tr>

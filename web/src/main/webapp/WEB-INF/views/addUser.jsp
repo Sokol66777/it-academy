@@ -25,7 +25,7 @@
                 <td><input type = "email" name="email" required="required"/></td>
             </tr>
             <tr>
-                <td><img src="${pageContext.request.contextPath}/user/viewImage" width="100"</td>
+                <td><img src="${pageContext.request.contextPath}/user/viewImage" width="100"/></td>
             </tr>
         	<tr>
         		<td><input type = "submit" value="Registration"/></td>

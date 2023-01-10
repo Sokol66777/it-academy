@@ -12,10 +12,6 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@NamedQueries({@NamedQuery(name = "Post.getAllPosts", query = "select p from Post as p"),
-               @NamedQuery(name = "Post.getPostByName", query = "select p from Post as p where p.name = :name"),
-               @NamedQuery(name = "Post.getByUserTopic", query = "select p from Post as p where p.topic.id = :idTopic and p.user.id = :idUser")})
-
 @Entity
 @Table(name = "post")
 public class Post implements Serializable {

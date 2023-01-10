@@ -1,42 +1,43 @@
 package com.pvt.services;
 
-import com.pvt.dao.DAO;
+
 import com.pvt.exceptions.LogicException;
+import com.pvt.repository.BaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
-public class BaseService<T> implements IService<T>{
+@NoRepositoryBean
+public class BaseService<T,ID> implements IService<T, ID>{
 
     @Autowired
-    private DAO<T> baseDAO;
+    private BaseRepository<T,ID> baseRepository;
 
 
     @Override
     @Transactional
     public void add(T t) throws LogicException {
 
-        baseDAO.add(t);
+        baseRepository.save(t);
     }
 
     @Override
     @Transactional
-    public void delete(long id) {
+    public void delete(ID id) {
 
-        baseDAO.delete(id);
+        baseRepository.deleteById(id);
     }
 
     @Override
     @Transactional
     public void modify(T t) throws LogicException {
 
-        baseDAO.modify(t);
+        baseRepository.save(t);
     }
 
     @Override
-    public T get(long id) {
+    public T get(ID id) {
 
-        return baseDAO.get(id);
+        return baseRepository.findById(id).orElse(null);
     }
 }

@@ -2,13 +2,13 @@ package com.pvt.services;
 
 import com.pvt.exceptions.LogicException;
 
-public interface IService <T>{
+public interface IService <T,ID>{
 
     void add(T t) throws LogicException;
 
-    void delete(long id);
+    void delete(ID id);
 
     void modify(T t) throws LogicException;
 
-    T get(long id);
+    T get(ID id);
 }

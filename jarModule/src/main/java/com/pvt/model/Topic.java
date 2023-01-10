@@ -16,8 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "topic")
-@NamedQueries({@NamedQuery(name = "Topic.getAllTopics", query = "select t from Topic as t"),
-               @NamedQuery(name = "Topic.getTopicByName",query = "select t from Topic as t where t.name = :name")})
+
 public class Topic implements Serializable {
 
     private static final long serialVersionUID = 1L;

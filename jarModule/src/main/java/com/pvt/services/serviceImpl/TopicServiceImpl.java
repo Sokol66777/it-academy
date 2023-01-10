@@ -1,9 +1,9 @@
 package com.pvt.services.serviceImpl;
 
-import com.pvt.dao.TopicDAO;
 import com.pvt.exceptions.LogicException;
 import com.pvt.exceptions.TopicLogicException;
 import com.pvt.model.Topic;
+import com.pvt.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.pvt.services.BaseService;
@@ -13,21 +13,21 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class TopicServiceImpl extends BaseService<Topic> implements TopicService {
+public class TopicServiceImpl extends BaseService<Topic,Long> implements TopicService {
 
     @Autowired
-    private TopicDAO topicDAOService;
+    private TopicRepository topicRepositoryService;
 
     @Override
     public List<Topic> getAll() {
 
-        return topicDAOService.getAll();
+        return topicRepositoryService.findAll();
     }
 
     @Override
     public Topic getByName(String name) {
 
-        return topicDAOService.getByName(name);
+        return topicRepositoryService.findByName(name).orElse(null);
     }
 
     @Transactional
@@ -35,10 +35,10 @@ public class TopicServiceImpl extends BaseService<Topic> implements TopicService
     public void add(Topic topic) throws LogicException {
 
         Topic topicCheck;
-        topicCheck = topicDAOService.getByName(topic.getName());
+        topicCheck = topicRepositoryService.findByName(topic.getName()).orElse(null);
         if(topicCheck!=null){
             throw new TopicLogicException("Topic with this name is create");
         }
-        topicDAOService.add(topic);
+        topicRepositoryService.save(topic);
     }
 }
