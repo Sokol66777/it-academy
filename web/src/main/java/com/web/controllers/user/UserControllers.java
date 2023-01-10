@@ -86,7 +86,7 @@ public class UserControllers {
     @PostMapping(value = {"/update"})
     public ModelAndView updateUser(@ModelAttribute("updateUser") UserForm updateUserForm, HttpServletRequest request) {
 
-        UserForm user = userFasad.get(updateUserForm.getId());
+        UserForm user = userFasad.getUserByIdWithTopic(updateUserForm.getId());
         UserForm imageForm = (UserForm) request.getSession().getAttribute("imageForm");
         ModelAndView modelAndView;
         if(updateUserForm.getConfirmedPassword()!= null &&!updateUserForm.getConfirmedPassword().equals(updateUserForm.getNewPassword())){
