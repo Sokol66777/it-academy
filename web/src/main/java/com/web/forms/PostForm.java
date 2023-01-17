@@ -1,8 +1,6 @@
 package com.web.forms;
 
-import com.pvt.model.Post;
-import com.pvt.model.Topic;
-import com.pvt.model.User;
+import com.web.jar.model.Post;
 import lombok.*;
 
 @Data

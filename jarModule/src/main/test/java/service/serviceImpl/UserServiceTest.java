@@ -1,10 +1,8 @@
 package service.serviceImpl;
 
-import com.pvt.config.SpringConfig;
-import com.pvt.exceptions.LogicException;
-import com.pvt.model.User;
-import com.pvt.repository.BaseRepository;
-import com.pvt.repository.UserRepository;
+import com.web.jar.config.SpringConfig;
+import com.web.jar.exceptions.LogicException;
+import com.web.jar.model.User;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,9 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import com.pvt.services.UserService;
+import com.web.jar.services.UserService;
 
-import java.util.List;
 
 import static org.junit.Assert.*;
 

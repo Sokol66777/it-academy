@@ -1,11 +1,11 @@
 package com.web.fasad;
 
-import com.pvt.exceptions.LogicException;
-import com.pvt.exceptions.UserLogicException;
-import com.pvt.model.Post;
-import com.pvt.model.Topic;
-import com.pvt.model.User;
-import com.pvt.services.UserService;
+import com.web.jar.exceptions.LogicException;
+import com.web.jar.exceptions.UserLogicException;
+import com.web.jar.model.Post;
+import com.web.jar.model.Topic;
+import com.web.jar.model.User;
+import com.web.jar.services.UserService;
 import com.web.forms.PostForm;
 import com.web.forms.TopicForm;
 import com.web.forms.UserForm;
@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.pvt.validation.ValidationUsersParametrs.validationPassword;
+import static com.web.jar.validation.ValidationUsersParametrs.validationPassword;
 
 @Component
 public class UserFasad {
@@ -114,7 +114,6 @@ public class UserFasad {
     }
 
     public void update(UserForm userForm) throws LogicException {
-
 
         User user = buildUser(userForm);
         userService.modify(user);

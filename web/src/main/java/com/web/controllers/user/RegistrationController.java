@@ -1,7 +1,7 @@
 package com.web.controllers.user;
 
 
-import com.pvt.exceptions.LogicException;
+import com.web.jar.exceptions.LogicException;
 import com.web.fasad.UserFasad;
 import com.web.forms.UserForm;
 import jakarta.servlet.http.HttpServletRequest;

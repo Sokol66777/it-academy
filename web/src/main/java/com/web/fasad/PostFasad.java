@@ -1,14 +1,13 @@
 package com.web.fasad;
 
-import com.pvt.exceptions.LogicException;
-import com.pvt.model.Post;
-import com.pvt.services.PostService;
-import com.pvt.services.TopicService;
-import com.pvt.services.UserService;
+import com.web.jar.exceptions.LogicException;
+import com.web.jar.model.Post;
+import com.web.jar.services.PostService;
+import com.web.jar.services.TopicService;
+import com.web.jar.services.UserService;
 import com.web.forms.PostForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.List;

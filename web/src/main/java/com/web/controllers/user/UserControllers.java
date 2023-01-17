@@ -1,8 +1,8 @@
 package com.web.controllers.user;
 
 
-import com.pvt.exceptions.LogicException;
-import com.pvt.exceptions.UserLogicException;
+import com.web.jar.exceptions.LogicException;
+import com.web.jar.exceptions.UserLogicException;
 import com.web.fasad.UserFasad;
 import com.web.forms.UserForm;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.pvt.validation.ValidationUsersParametrs.validationPassword;
+import static com.web.jar.validation.ValidationUsersParametrs.validationPassword;
 
 
 @Controller

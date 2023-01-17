@@ -1,7 +1,7 @@
 package com.web.forms;
 
-import com.pvt.model.Post;
-import com.pvt.model.Topic;
+import com.web.jar.model.Post;
+import com.web.jar.model.Topic;
 import lombok.*;
 import org.hibernate.LazyInitializationException;
 

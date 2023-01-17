@@ -1,7 +1,7 @@
 package com.web.controllers.topic;
 
 
-import com.pvt.exceptions.LogicException;
+import com.web.jar.exceptions.LogicException;
 import com.web.fasad.PostFasad;
 import com.web.fasad.TopicFasad;
 import com.web.fasad.UserFasad;

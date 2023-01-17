@@ -1,6 +1,6 @@
 package com.web.controllers.post;
 
-import com.pvt.exceptions.LogicException;
+import com.web.jar.exceptions.LogicException;
 import com.web.fasad.PostFasad;
 import com.web.forms.PostForm;
 import com.web.forms.UserForm;

@@ -1,11 +1,11 @@
 package com.web.fasad;
 
 
-import com.pvt.exceptions.LogicException;
-import com.pvt.model.Post;
-import com.pvt.model.Topic;
-import com.pvt.services.TopicService;
-import com.pvt.services.UserService;
+import com.web.jar.exceptions.LogicException;
+import com.web.jar.model.Post;
+import com.web.jar.model.Topic;
+import com.web.jar.services.TopicService;
+import com.web.jar.services.UserService;
 import com.web.forms.PostForm;
 import com.web.forms.TopicForm;
 import org.springframework.beans.factory.annotation.Autowired;
