@@ -5,6 +5,7 @@ import com.web.fasad.TopicFasad;
 import com.web.fasad.UserFasad;
 import com.web.forms.UserForm;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/")
@@ -30,6 +33,11 @@ public class LoginController {
         ModelAndView modelAndView = new ModelAndView("login");
         modelAndView.addObject("loginForm", new UserForm());
         return modelAndView;
+    }
+
+    @GetMapping
+    public void login(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        response.sendRedirect(request.getContextPath()+"/login");
     }
 
 
