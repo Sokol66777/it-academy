@@ -1,9 +1,9 @@
 package com.pvt.services.serviceImpl;
 
-import com.pvt.dao.UserDAO;
 import com.pvt.exceptions.LogicException;
 import com.pvt.exceptions.UserLogicException;
 import com.pvt.model.User;
+import com.pvt.repository.UserRepository;
 import com.pvt.validation.ValidationUsersParametrs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,33 +14,33 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class UserServiceImpl extends BaseService<User> implements UserService {
+public class UserServiceImpl extends BaseService<User,Long> implements UserService {
 
     @Autowired
-    private UserDAO userDAOService;
+    private UserRepository userRepositoryService;
 
     @Override
     public List<User> getAllUsers() {
 
-        return userDAOService.getAllUsers();
+        return userRepositoryService.findAll();
     }
 
     @Override
     public User getByUsername(String username) {
 
-        return userDAOService.getByUsername(username);
+        return userRepositoryService.findByUsername(username).orElse(null);
     }
 
     @Override
     public User getByEmail(String email) {
 
-        return userDAOService.getByEmail(email);
+        return userRepositoryService.findByEmail(email).orElse(null);
     }
 
     @Override
-    public User getUserByIdWithTopic(long id) {
+    public User getUserByIdWithTopic(Long id) {
 
-        return userDAOService.getUserByIdWithTopic(id);
+        return userRepositoryService.getUserByIdWithTopic(id);
     }
 
     @Override
@@ -49,7 +49,6 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
         User userCheck;
         user.setRole("user");
 
-        ValidationUsersParametrs.validationPassword(user.getPassword());
 
         userCheck = getByEmail(user.getEmail());
         if (userCheck != null) {
@@ -60,7 +59,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
         if (userCheck != null) {
             throw new UserLogicException("this username used");
         }
-        userDAOService.add(user);
+        userRepositoryService.save(user);
     }
 
     @Transactional
@@ -68,13 +67,11 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
     public void modify(User user) throws LogicException {
 
         User userCheck;
-        User userOld = userDAOService.get(user.getID());
-
-        ValidationUsersParametrs.validationPassword(user.getPassword());
+        User userOld = userRepositoryService.findById(user.getID()).orElse(null);
 
         if(!userOld.getUsername().equals(user.getUsername())){
 
-            userCheck = userDAOService.getByUsername(user.getUsername());
+            userCheck = userRepositoryService.findByUsername(user.getUsername()).orElse(null);
             if (userCheck != null) {
                 throw new UserLogicException("this username used");
             }
@@ -82,11 +79,11 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
         if(!userOld.getEmail().equals(user.getEmail())){
 
-            userCheck = userDAOService.getByEmail(user.getEmail());
+            userCheck = userRepositoryService.findByEmail(user.getEmail()).orElse(null);
             if (userCheck != null) {
                 throw new UserLogicException("this email used");
             }
         }
-        userDAOService.modify(user);
+        userRepositoryService.save(user);
     }
 }

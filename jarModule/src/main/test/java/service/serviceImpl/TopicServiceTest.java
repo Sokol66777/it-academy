@@ -1,5 +1,6 @@
 package service.serviceImpl;
 
+import com.pvt.config.SpringConfig;
 import com.pvt.exceptions.LogicException;
 import com.pvt.model.Topic;
 import org.junit.Ignore;
@@ -15,7 +16,7 @@ import static org.junit.Assert.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring-hibernate.xml")
+@ContextConfiguration(classes = SpringConfig.class)
 public class TopicServiceTest {
 
     private final String TOPIC_NAME = "testTopic";
@@ -53,7 +54,7 @@ public class TopicServiceTest {
     @Test
     @Ignore
     public void getTest(){
-        assertEquals(topicService.get(7).getID(),7);
+        assertEquals(topicService.get(7L).getID(),7);
     }
 
 
@@ -71,7 +72,7 @@ public class TopicServiceTest {
     @Ignore
     public void deleteNegativeTest(){
         assertThrows(InvalidDataAccessApiUsageException.class,()->{
-            topicService.delete(8754585);
+            topicService.delete(8754585L);
         });
     }
 }

@@ -1,12 +1,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language = "java" contentType= "text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+
 <html>
 <head>
 </head>
 <body>
     <p>Add topic page</p>
     <p><c:out value="${errorMassage}"/></p>
-    <c:if test="${user.role=='admin'}">
+    <security:authorize access = "hasRole('ROLE_admin')">
         <form action="add" method="post">
     	    <table>
 			    <tr>
@@ -18,8 +20,8 @@
 	    		</tr>
 		    </table>
 	    </form>
-	</c:if>
-	<c:if test = "${user.role=='user'}">
+	</security:authorize>
+	<security:authorize access = "hasRole('ROLE_user')">
 	    <form action="add" method="post">
 	        <table>
 	            <tr>
@@ -39,7 +41,7 @@
 	            </tr>
 	        </table>
 	    </form>
-	</c:if>
+	</security:authorize>
     <button onclick = "location.href='${pageContext.request.contextPath}/user/welcome'">welcome</button>
 </body>
 </html>

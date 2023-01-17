@@ -2,12 +2,13 @@ package com.web.controllers.user;
 
 
 import com.pvt.exceptions.LogicException;
-import com.pvt.model.User;
+import com.pvt.exceptions.UserLogicException;
 import com.web.fasad.UserFasad;
 import com.web.forms.UserForm;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,6 +19,9 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.pvt.validation.ValidationUsersParametrs.validationPassword;
+
 
 @Controller
 @RequestMapping("/user")
@@ -80,9 +84,9 @@ public class UserControllers {
     }
 
     @PostMapping(value = {"/update"})
-    public ModelAndView updateUser(@ModelAttribute("updateUser") UserForm updateUserForm, HttpServletRequest request){
+    public ModelAndView updateUser(@ModelAttribute("updateUser") UserForm updateUserForm, HttpServletRequest request) {
 
-        UserForm user = userFasad.get(updateUserForm.getId());
+        UserForm user = userFasad.getUserByIdWithTopic(updateUserForm.getId());
         UserForm imageForm = (UserForm) request.getSession().getAttribute("imageForm");
         ModelAndView modelAndView;
         if(updateUserForm.getConfirmedPassword()!= null &&!updateUserForm.getConfirmedPassword().equals(updateUserForm.getNewPassword())){
@@ -92,16 +96,23 @@ public class UserControllers {
             modelAndView.addObject("updateUserForm",user);
         }else{
 
-            if(updateUserForm.getConfirmedPassword()!= null ) {
 
-                user.setPassword(updateUserForm.getNewPassword());
-            }
             if(imageForm!=null){
                 user.setImage(imageForm.getImage());
             }
             user.setEmail(updateUserForm.getNewEmail());
             user.setUsername(updateUserForm.getNewUsername());
             try{
+                if(updateUserForm.getNewPassword()!=null && !updateUserForm.getNewPassword().equals("")) {
+
+                    try{
+                        validationPassword(updateUserForm.getNewPassword());
+                        user.setPassword(BCrypt.hashpw(updateUserForm.getNewPassword(), BCrypt.gensalt(10)));
+                    }catch (UserLogicException e){
+                        throw new LogicException(e);
+                    }
+                }
+
                 userFasad.update(user);
                 UserForm userFromSession = (UserForm) request.getSession().getAttribute("user");
                 if(userFromSession.getId()==updateUserForm.getId()){

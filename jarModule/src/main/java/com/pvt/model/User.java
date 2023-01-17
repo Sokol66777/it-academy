@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -13,10 +14,6 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@NamedQueries({@NamedQuery(name = "User.getUserByUsername",query = "select u from User AS u where u.username = :username"),
-               @NamedQuery(name = "User.getUserByEmail", query = "select u from User as u where u.email = :email"),
-               @NamedQuery(name = "User.getAllUsers", query = "select u from User as u"),
-               @NamedQuery(name = "User.getUserByIDWithTopic", query = "select u from User u left join fetch u.topics where u.ID = :id")})
 @Entity
 @Table(name="user")
 
@@ -43,7 +40,7 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
     private Set <Post> posts=new HashSet<>();
 
-    @ManyToMany()
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "User_Topic",
             joinColumns = {@JoinColumn(name = "user_ID")},
